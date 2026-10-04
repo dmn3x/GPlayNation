@@ -1,0 +1,393 @@
+@import 'tailwindcss';
+
+/* vendor/ and storage/ are gitignored, so Tailwind cannot auto-scan them */
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/*
+ * GPlayNation design tokens — extracted from the Figma file via MCP.
+ * See DESIGN-TOKENS.md for the extraction notes.
+ */
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    /* surfaces */
+    --color-gpn-bg: #0f0f10;
+    --color-gpn-chrome: #161618;
+    --color-gpn-raised: #161618;
+    --color-gpn-elevated: #222224;
+    --color-gpn-border: #222224;
+    --color-gpn-border-strong: #27282a;
+
+    /* text */
+    --color-gpn-fg: #ffffff;
+    --color-gpn-fg-muted: #ffffff9c;
+    --color-gpn-fg-subtle: #ffffff80;
+    --color-gpn-fg-faint: #ffffff66;
+    --color-gpn-fg-ghost: #ffffff4d;
+    --color-gpn-link: #60a5fa;
+    --color-gpn-danger: #e7000b;
+    --color-gpn-success: #30d158;
+    --color-gpn-warn: #ff9f0a;
+
+    /* accent */
+    --color-gpn-accent: #1d4ed8;
+    --color-gpn-accent-hi: #287bf7;
+
+    /* radii seen in Figma */
+    --radius-gpn-sm: 4px;
+    --radius-gpn-md: 10px;
+    --radius-gpn-lg: 12px;
+    --radius-gpn-xl: 16px;
+
+    /* elevation */
+    --shadow-gpn-card: 0 8px 10px -6px rgb(0 0 0 / 0.2);
+    --shadow-gpn-screen: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --shadow-gpn-pop: 0 3px 6px rgb(0 0 0 / 0.2);
+}
+
+@layer base {
+    :root {
+        color-scheme: dark;
+    }
+
+    html {
+        background: #0f0f10;
+    }
+
+    body {
+        background: var(--color-gpn-bg);
+        color: var(--color-gpn-fg);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* Figma uses Inter with tight tracking on large headings */
+    h1,
+    h2 {
+        letter-spacing: -0.025em;
+    }
+}
+
+@layer components {
+    /* ---------- nav ---------- */
+    .gpn-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-inline: 48px;
+        height: 98px;
+    }
+
+    .gpn-nav-link {
+        padding: 10px 14px;
+        border-radius: var(--radius-gpn-md);
+        font-weight: 500;
+        font-size: 16.2px;
+        line-height: 21.6px;
+        color: var(--color-gpn-fg-subtle);
+        transition: color 120ms ease, background-color 120ms ease;
+    }
+
+    .gpn-nav-link:hover {
+        color: var(--color-gpn-fg);
+        background: #ffffff0d;
+    }
+
+    .gpn-nav-link[aria-current='page'] {
+        color: var(--color-gpn-accent-hi);
+        background: #1d4ed81a;
+    }
+
+    /* ---------- sidebar ---------- */
+    .gpn-sidebar {
+        background: var(--color-gpn-bg);
+        border-right: 1px solid var(--color-gpn-border);
+    }
+
+    .gpn-side-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: var(--radius-gpn-md);
+        font-size: 16.2px;
+        color: var(--color-gpn-fg-subtle);
+        transition: color 120ms ease, background-color 120ms ease;
+    }
+
+    .gpn-side-link:hover {
+        color: var(--color-gpn-fg);
+        background: #ffffff0d;
+    }
+
+    .gpn-side-link[aria-current='page'],
+    .gpn-side-link.is-active {
+        color: var(--color-gpn-fg);
+        background: var(--color-gpn-elevated);
+        box-shadow: inset 0 0 0 1px var(--color-gpn-border-strong);
+    }
+
+    .gpn-side-link[aria-current='page'] {
+        color: var(--color-gpn-accent-hi);
+    }
+
+    /* ---------- buttons ---------- */
+    .gpn-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: var(--radius-gpn-lg);
+        font-size: 16.2px;
+        line-height: 21.6px;
+        font-weight: 500;
+        transition: filter 120ms ease, background-color 120ms ease;
+        cursor: pointer;
+    }
+
+    .gpn-btn-primary {
+        background: var(--color-gpn-accent);
+        color: #fff;
+        box-shadow: 0 0 15px 0 #1d4ed8;
+    }
+
+    .gpn-btn-primary:hover {
+        filter: brightness(1.15);
+    }
+
+    .gpn-btn-ghost {
+        background: transparent;
+        border: 1px solid #ffffff4d;
+        color: var(--color-gpn-fg);
+    }
+
+    .gpn-btn-ghost:hover {
+        background: #ffffff0f;
+    }
+
+    .gpn-btn-quiet {
+        background: var(--color-gpn-elevated);
+        color: var(--color-gpn-fg-muted);
+    }
+
+    .gpn-btn-quiet:hover {
+        background: var(--color-gpn-border-strong);
+        color: var(--color-gpn-fg);
+    }
+
+    .gpn-btn-sm {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* ---------- form ---------- */
+    .gpn-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16.2px;
+        color: var(--color-gpn-fg);
+    }
+
+    .gpn-input {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: var(--radius-gpn-md);
+        background: var(--color-gpn-bg);
+        border: 1px solid var(--color-gpn-border-strong);
+        color: var(--color-gpn-fg);
+        font-size: 16.2px;
+        line-height: 21.6px;
+        transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .gpn-input::placeholder {
+        color: var(--color-gpn-fg-faint);
+    }
+
+    .gpn-input:focus {
+        outline: none;
+        border-color: var(--color-gpn-accent);
+        box-shadow: 0 0 0 3px #1d4ed826;
+    }
+
+    /* ---------- surfaces ---------- */
+    .gpn-card {
+        background: var(--color-gpn-raised);
+        border: 1px solid var(--color-gpn-border);
+        border-radius: var(--radius-gpn-xl);
+    }
+
+    .gpn-panel {
+        background: var(--color-gpn-raised);
+        border: 1px solid var(--color-gpn-border);
+        border-radius: var(--radius-gpn-xl);
+    }
+
+    /* ---------- chips / tags ---------- */
+    .gpn-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: var(--radius-gpn-sm);
+        background: var(--color-gpn-elevated);
+        border: 1px solid var(--color-gpn-border-strong);
+        font-size: 13px;
+        line-height: 18px;
+        color: var(--color-gpn-fg-muted);
+    }
+
+    .gpn-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 10px;
+        border-radius: 9999px;
+        font-size: 13px;
+        font-weight: 500;
+        background: #30d1581f;
+        color: var(--color-gpn-success);
+    }
+
+    .gpn-badge-down {
+        background: #e7000b1f;
+        color: var(--color-gpn-danger);
+    }
+
+    /* ---------- stat tile ---------- */
+    .gpn-stat {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 24px;
+        background: var(--color-gpn-raised);
+        border: 1px solid var(--color-gpn-border);
+        border-radius: var(--radius-gpn-xl);
+    }
+
+    .gpn-stat-icon {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 9999px;
+        background: #1d4ed826;
+        color: var(--color-gpn-accent-hi);
+        flex: none;
+    }
+
+    /* ---------- tabs ---------- */
+    .gpn-tab {
+        padding: 14px 4px;
+        margin-right: 28px;
+        font-size: 16.2px;
+        color: var(--color-gpn-fg-muted);
+        border-bottom: 2px solid transparent;
+        transition: color 120ms ease, border-color 120ms ease;
+    }
+
+    .gpn-tab:hover {
+        color: var(--color-gpn-fg);
+    }
+
+    .gpn-tab[aria-selected='true'] {
+        color: var(--color-gpn-fg);
+        border-bottom-color: var(--color-gpn-fg);
+    }
+
+    /* ---------- chart ---------- */
+    .gpn-chart-line {
+        fill: none;
+        stroke: var(--color-gpn-accent);
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .gpn-chart-area {
+        fill: url(#gpn-area);
+        stroke: none;
+    }
+}
+/* ---------- anim overlays (Figma animation sections) ---------- */
+.gpn-anim-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f0f10;
+    animation: gpn-anim-fade 2.4s ease forwards;
+}
+
+.gpn-anim-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gpn-anim-logo {
+    position: relative;
+    animation: gpn-anim-pulse 1.2s ease-in-out infinite;
+}
+
+.gpn-anim-logo--spin-ring::after {
+    content: "";
+    position: absolute;
+    inset: -18px;
+    border-radius: 9999px;
+    border: 2px solid #1d4ed833;
+    border-top-color: var(--color-gpn-accent);
+    animation: gpn-anim-spin 0.9s linear infinite;
+}
+
+.gpn-anim-bar {
+    width: 220px;
+    height: 4px;
+    border-radius: 9999px;
+    background: #222224;
+    overflow: hidden;
+}
+
+.gpn-anim-bar span {
+    display: block;
+    height: 100%;
+    width: 40%;
+    border-radius: 9999px;
+    background: var(--color-gpn-accent);
+    animation: gpn-anim-bar 1s ease-in-out infinite;
+}
+
+.gpn-anim-check-circle {
+    stroke-dasharray: 151;
+    stroke-dashoffset: 151;
+    animation: gpn-anim-draw 0.6s ease-out forwards;
+}
+
+.gpn-anim-check-mark {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: gpn-anim-draw 0.4s ease-out 0.5s forwards;
+}
+
+@keyframes gpn-anim-fade {
+    0%, 75% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes gpn-anim-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: 0.85; }
+}
+
+@keyframes gpn-anim-spin { to { transform: rotate(360deg); } }
+
+@keyframes gpn-anim-bar {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(550%); }
+}
+
+@keyframes gpn-anim-draw { to { stroke-dashoffset: 0; } }

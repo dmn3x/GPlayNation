@@ -102,7 +102,7 @@ Domain tables keep SRS Kamus Data names (`transaksis`, `pembayarans`, `komisis`)
 
 **`payouts`** — `id`, `developer_id` FK, `admin_id` FK→users, `period` varchar(7) (`YYYY-MM` of processing), `gross`, `commission`, `net` (sums of covered `komisi_transaksi` rows), `status` enum(`processed`) — rows exist only once processed, timestamps.
 
-**`libraries`** — `id`, `user_id` FK, `game_id` FK, `transaksi_id` FK nullable (null = free claim), `source` enum(`purchase`,`free`), created timestamps. Unique(`user_id`,`game_id`).
+**`libraries`** — `id`, `user_id` FK, `game_id` FK, `transaksi_id` FK nullable (null = free claim), `source` enum(`purchase`,`free`), `is_showcased` bool default true (SRS §4.1: users choose which owned games are showcased on their profile), created timestamps. Unique(`user_id`,`game_id`).
 
 **`iap_ownerships`** — `id`, `user_id` FK, `iap_id` FK, `transaksi_id` FK, created timestamps. Unique(`user_id`,`iap_id`).
 
