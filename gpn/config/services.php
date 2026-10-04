@@ -35,9 +35,8 @@ return [
         ],
     ],
 
-    'midtrans' => [
-        // SRS 2.6.3 — Midtrans payment gateway. Used to verify webhook signatures.
-        'server_key' => env('MIDTRANS_SERVER_KEY'),
+    'gpn_payment' => [
+        'server_key' => env('GPN_PAYMENT_SERVER_KEY'),
     ],
 
 ];
