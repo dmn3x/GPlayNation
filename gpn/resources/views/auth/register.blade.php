@@ -107,5 +107,7 @@
             sync();
         })();
     </script>
+
+    <x-toasts />
 </body>
 </html>

@@ -57,7 +57,7 @@
     </div>
 
     @if (session('account_created'))
-        <div id="account-created" class="fixed inset-0 z-50 flex items-center justify-center bg-bg/80 backdrop-blur-sm" role="status">
+        <div id="account-created" class="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-bg/80 backdrop-blur-sm" role="status">
             <div class="card flex flex-col items-center gap-3 px-8 py-7 text-center">
                 <x-icon name="check" class="h-10 w-10 text-success" />
                 <p class="section-heading">Account created!</p>
@@ -67,5 +67,14 @@
             </div>
         </div>
     @endif
+
+    @if (session('account_created'))
+        <script>
+            var accountCreated = document.getElementById('account-created');
+            accountCreated.addEventListener('animationend', function () { accountCreated.remove(); });
+        </script>
+    @endif
+
+    <x-toasts />
 </body>
 </html>

@@ -97,6 +97,12 @@ class AccountTest extends TestCase
         $this->actingAs($user)->get('/dev')->assertForbidden();
     }
 
+    public function test_pending_developer_cannot_access_dev_portal(): void
+    {
+        $dev = User::factory()->developer()->create();
+        $this->actingAs($dev)->get('/dev')->assertForbidden();
+    }
+
     public function test_logout_clears_session(): void
     {
         $user = User::factory()->create();

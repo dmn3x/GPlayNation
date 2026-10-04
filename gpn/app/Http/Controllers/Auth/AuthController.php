@@ -30,11 +30,17 @@ class AuthController extends Controller
 
         if ($user->isDeveloper() && $user->status === UserStatus::Pending) {
             Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             return back()->with('error', 'Your developer account is still awaiting admin verification.');
         }
 
         if ($user->isDeveloper() && $user->status === UserStatus::Rejected) {
             Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             return back()->with('error', 'Your developer account was rejected: ' . ($user->rejection_reason ?? 'no reason given'));
         }
 
