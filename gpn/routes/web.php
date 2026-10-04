@@ -3,7 +3,9 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +24,13 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::get('/profile', fn () => redirect()->route('home'))->middleware('auth')->name('profile.show'); // placeholder — Task 6 replaces
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/showcase/{library}', [ProfileController::class, 'showcase'])->name('profile.showcase');
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{transaksi:order_id}', [TransactionController::class, 'show'])->name('transactions.show');
+});
 
 Route::get('/dev', fn () => 'ok')->middleware(['auth', 'role:developer']); // placeholder — Task 8 replaces
 Route::get('/admin', fn () => 'ok')->middleware(['auth', 'role:admin']);    // placeholder — Task 10 replaces
