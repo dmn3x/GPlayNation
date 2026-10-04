@@ -38,10 +38,11 @@ SRS grounding: F-01…F-10 (§2.5), NF-01…NF-06, use cases 3.1.1.1–3.1.5.5, 
 - **Payments:** simulated gateway (§8). No external HTTP calls anywhere in the app.
 - **Fonts:** Inter self-hosted via `@fontsource/inter` (no CDN).
 
-### 3.2 Environment
+### 3.2 Environment & deployment
 
 - Dev served from Docker container `gpn-serve` (`php:8.4-cli`, bind-mount project → `/app`, `php artisan serve --host=0.0.0.0 --port=8000`).
-- PHP ini raised for installer uploads: `upload_max_filesize=64M`, `post_max_size=64M` (mounted conf snippet).
+- **Deployment requirement (user, 2026-10-04):** at handoff the finished app must be running in Docker and reachable in the user's browser. The existing `gpn-serve` container is recreated against the rebuilt app (same `php:8.4-cli` image, same mount/port) with the ini overrides below baked in; final verification includes an HTTP 200 smoke check through the container.
+- PHP ini raised for installer uploads: `upload_max_filesize=64M`, `post_max_size=64M` (mounted conf snippet in the recreated container).
 - Composer runs via the `composer` Docker image against the same mount (host has no PHP/Composer).
 - Node 24 on host for `npm ci` / `npm run build` (Vite). Assets committed as built output is *not* required; build is part of setup.
 
@@ -248,7 +249,7 @@ Target: **all green**; `vendor/bin/pint --test` clean.
 
 ## 13. Acceptance criteria ("perfect, polished, no errors")
 
-1. `php artisan test` — 100% pass. 2. `vendor/bin/pint --test` — clean. 3. `npm run build` — clean. 4. All 12 Figma screens implemented to tokens, **no macOS title bar anywhere**; admin panel visually consistent with Dev Mode. 5. Zero fake/stub/dead UI — every control works or doesn't exist (no `random_int` counts, no sine charts, no `#` links). 6. Full click-through smoke (guest→register→buy→download; developer→upload→moderated→sale→payout; admin→verify/moderate/commission/report) with an empty `laravel.log`. 7. `README.md` — setup/run instructions (Docker, migrate --seed, build, serve). 8. Seeded demo world: admin, 1 pending + 2 verified developers, 3 users, 12 Indonesian local games (mixed free/paid/promoted) with generated SVG cover art, IAPs, tags, 3 months of transactions, community posts.
+1. `php artisan test` — 100% pass. 2. `vendor/bin/pint --test` — clean. 3. `npm run build` — clean. 4. All 12 Figma screens implemented to tokens, **no macOS title bar anywhere**; admin panel visually consistent with Dev Mode. 5. Zero fake/stub/dead UI — every control works or doesn't exist (no `random_int` counts, no sine charts, no `#` links). 6. Full click-through smoke (guest→register→buy→download; developer→upload→moderated→sale→payout; admin→verify/moderate/commission/report) with an empty `laravel.log`. 7. `README.md` — setup/run instructions (Docker, migrate --seed, build, serve). 8. **The app is deployed and running in Docker** (`gpn-serve` recreated against the rebuilt app, port 8000) with an HTTP 200 smoke check on `/`, `/store`, `/login`, and the portal redirects. 9. Seeded demo world: admin, 1 pending + 2 verified developers, 3 users, 12 Indonesian local games (mixed free/paid/promoted) with generated SVG cover art, IAPs, tags, 3 months of transactions, community posts.
 
 ## 14. Explicit non-goals
 
