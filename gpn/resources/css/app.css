@@ -3,6 +3,8 @@
 @import '@fontsource/inter/600.css';
 @import 'tailwindcss';
 
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
 @theme {
     --color-bg: #0F0F10;
     --color-raised: #161618;
@@ -27,6 +29,18 @@
     color: rgb(255 255 255 / .5);
 }
 
+@utility text-muted {
+    color: rgb(255 255 255 / .6);
+}
+
+@utility text-faint {
+    color: rgb(255 255 255 / .4);
+}
+
+@utility text-ghost {
+    color: rgb(255 255 255 / .3);
+}
+
 @layer base {
     html { color-scheme: dark; }
     body { @apply bg-bg text-fg font-sans antialiased; }
@@ -38,9 +52,6 @@
 }
 
 @layer components {
-    .text-muted { color: rgb(255 255 255 / .6); }
-    .text-faint { color: rgb(255 255 255 / .4); }
-    .text-ghost { color: rgb(255 255 255 / .3); }
     .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-[16.2px] font-medium text-white transition hover:bg-accent-hi hover:shadow-glow disabled:opacity-40 disabled:pointer-events-none; }
     .btn-ghost { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border-strong bg-elevated px-5 py-2.5 text-[16.2px] font-medium text-fg transition hover:border-accent disabled:opacity-40; }
     .input { @apply w-full rounded-input border border-border bg-elevated px-4 py-2.5 text-[16.2px] text-fg placeholder:text-subtle focus:border-accent focus:outline-none; }
