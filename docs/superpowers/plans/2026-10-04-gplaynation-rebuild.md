@@ -785,7 +785,6 @@ return new class extends Migration
 ```
 
 (`libraries` and `iap_ownerships` live in the **money** migration below, because they FK to `transaksis` — SQLite tolerates forward FK references, MySQL rejects them.)
-```
 
 `2026_01_01_000200_create_gplaynation_money_tables.php`:
 
