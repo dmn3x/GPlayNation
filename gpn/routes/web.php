@@ -6,7 +6,10 @@ use App\Http\Controllers\Dev\DashboardController;
 use App\Http\Controllers\Dev\GameController;
 use App\Http\Controllers\Dev\IapController;
 use App\Http\Controllers\Dev\PayoutController;
+use App\Http\Controllers\Dev\PromotionController;
+use App\Http\Controllers\Dev\SalesController;
 use App\Http\Controllers\Dev\SettingController;
+use App\Http\Controllers\Dev\TagController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\GatewayController;
 use App\Http\Controllers\HomeController;
@@ -65,6 +68,15 @@ Route::middleware(['auth', 'role:developer'])->prefix('dev')->name('dev.')->grou
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::get('/payouts', [PayoutController::class, 'index'])->name('payouts.index');
+    Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
+    Route::get('/promotion', [PromotionController::class, 'index'])->name('promotion.index');
+    Route::post('/promotion', [PromotionController::class, 'store'])->name('promotion.store');
+    Route::delete('/promotion/{promotion}', [PromotionController::class, 'destroy'])->name('promotion.destroy');
+    Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+    Route::post('/tags', [TagController::class, 'store'])->name('tags.store');
+    Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
+    Route::post('/tags/{tag}/attach', [TagController::class, 'attach'])->name('tags.attach');
+    Route::post('/tags/{tag}/detach', [TagController::class, 'detach'])->name('tags.detach');
 });
 Route::get('/admin', fn () => 'ok')->middleware(['auth', 'role:admin']);    // placeholder — Task 10 replaces
 
