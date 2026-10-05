@@ -6,7 +6,8 @@ Built with Laravel 12 + Blade + Tailwind CSS (v4) + Vite.
 
 ## Requirements
 
-- Docker (all PHP tooling runs through the `gpn-php:8.4` image — no local PHP needed)
+- Docker (PHP tooling runs through the `gpn-php:8.4` image, `composer install` through the
+  `composer` image — no local PHP or Composer needed)
 - Node.js (only for building frontend assets, optional if you serve prebuilt assets)
 
 Build the PHP image once from the repo root:
@@ -21,7 +22,7 @@ From the repo root (`GPlayNation/`), the app lives in `gpn/`:
 
 ```bash
 cd gpn
-composer install
+docker run --rm -v "$PWD":/app -w /app composer install
 cp .env.example .env
 docker run --rm -v "$PWD":/app -w /app gpn-php:8.4 php artisan key:generate
 docker run --rm -v "$PWD":/app -w /app gpn-php:8.4 php artisan migrate --seed

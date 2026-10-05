@@ -23,6 +23,11 @@ class AccountTest extends TestCase
         ], $overrides);
     }
 
+    public function test_login_page_renders_flashed_error_toast(): void
+    {
+        $this->withSession(['error' => 'awaiting admin verification'])->get('/login')->assertSee('awaiting admin verification');
+    }
+
     public function test_register_user_activates_immediately_and_logs_in(): void // SRS 3.1.1.1
     {
         $response = $this->post('/register', $this->validRegistration());

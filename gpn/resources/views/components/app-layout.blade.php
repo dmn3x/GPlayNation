@@ -21,7 +21,7 @@
             </form>
             @auth
                 <a href="{{ route('profile.show') }}" class="flex items-center gap-2 rounded-full px-3 py-1.5 hover:bg-elevated">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-semibold">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-semibold">{{ strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
                     <span class="text-[16.2px] font-medium">{{ auth()->user()->name }}</span>
                 </a>
             @else

@@ -58,7 +58,10 @@
             (function () {
                 var accountCreated = document.getElementById('account-created');
                 if (! accountCreated) return;
-                accountCreated.addEventListener('animationend', function () { accountCreated.remove(); });
+                accountCreated.addEventListener('animationend', function (event) {
+                    if (event.target !== accountCreated) return;
+                    accountCreated.remove();
+                });
             })();
         </script>
     @endif

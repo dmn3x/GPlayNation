@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Session\TokenMismatchException;
 use Tests\TestCase;
 
 class ErrorPagesTest extends TestCase
@@ -22,11 +24,13 @@ class ErrorPagesTest extends TestCase
 
     public function test_expired_session_page_is_themed(): void
     {
-        // VerifyCsrfToken is bypassed while testing (runningUnitTests), so a
-        // mismatched token can't produce a real 419 here — assert the themed
-        // page the exception handler renders for TokenMismatchException instead.
-        $html = view('errors.419')->render();
-        $this->assertStringContainsString('Session expired', $html);
-        $this->assertStringContainsString('GPlayNation', $html);
+        // VerifyCsrfToken is bypassed while testing (runningUnitTests), so drive a
+        // TokenMismatchException through the real exception handler instead.
+        $handler = $this->app->make(ExceptionHandler::class);
+        $response = $handler->render($this->app->make('request'), new TokenMismatchException('CSRF token mismatch.'));
+
+        $this->assertSame(419, $response->getStatusCode());
+        $this->assertStringContainsString('Session expired', $response->getContent());
+        $this->assertStringContainsString('GPlayNation', $response->getContent());
     }
 }

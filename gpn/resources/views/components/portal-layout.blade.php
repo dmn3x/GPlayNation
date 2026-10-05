@@ -14,7 +14,13 @@
 </head>
 <body class="min-h-screen">
     <div class="border-b border-border bg-raised px-4 py-3 md:hidden">
-        <a href="{{ route('home') }}" class="mb-2 flex items-center gap-2"><x-logo class="h-7 w-7" /><span class="font-semibold">GPlayNation</span></a>
+        <div class="mb-2 flex items-center justify-between gap-2">
+            <a href="{{ route('home') }}" class="flex items-center gap-2"><x-logo class="h-7 w-7" /><span class="font-semibold">GPlayNation</span></a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button aria-label="Log out" class="rounded-lg p-2 text-subtle transition hover:bg-accent/10 hover:text-fg"><x-icon name="logout" class="h-5 w-5" /></button>
+            </form>
+        </div>
         <nav class="flex gap-1 overflow-x-auto">
             @foreach ($nav as [$route, $label, $icon])
                 @if (Route::has($route))
