@@ -27,7 +27,7 @@ class TransactionHistoryTest extends TestCase
 
     public function test_empty_history_state(): void // SRS 3.1.3.4 alternate
     {
-        $this->actingAs(User::factory()->create())->get('/transactions')->assertSee('No transactions yet');
+        $this->actingAs(User::factory()->create())->get('/transactions')->assertSee('Belum ada transaksi');
     }
 
     public function test_detail_shows_payment_and_status(): void
@@ -39,7 +39,7 @@ class TransactionHistoryTest extends TestCase
         $this->actingAs($user)->get("/transactions/{$trx->order_id}")
             ->assertOk()
             ->assertSee('REF-ABC123')
-            ->assertSee('Success');
+            ->assertSee('Berhasil');
     }
 
     public function test_detail_forbidden_for_other_users(): void

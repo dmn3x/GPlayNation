@@ -33,7 +33,7 @@ class ProfileTest extends TestCase
         $this->actingAs($user)->get('/profile')
             ->assertOk()
             ->assertSee('Kuntilanak Mansion')
-            ->assertSeeInOrder(['Games owned', 'Wishlist', 'IAP items']);
+            ->assertSeeInOrder(['Assets', 'Slots', 'Stats']);
     }
 
     public function test_showcase_toggle_controls_profile_main_section(): void // SRS 4.1

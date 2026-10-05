@@ -83,7 +83,7 @@ class CheckoutTest extends TestCase
         $this->actingAs($user)->post("/gateway/{$trx->order_id}/complete", ['method' => 'e_wallet', 'outcome' => 'settlement'])
             ->assertRedirect(route('checkout.result', $trx->order_id));
         $this->assertSame(TransaksiStatus::Success, $trx->fresh()->status);
-        $this->get(route('checkout.result', $trx->order_id))->assertSee('Payment successful');
+        $this->get(route('checkout.result', $trx->order_id))->assertSee('Game siap dimainkan');
     }
 
     public function test_simulator_failure_shows_failed_result(): void
@@ -92,7 +92,7 @@ class CheckoutTest extends TestCase
         $trx = Transaksi::factory()->create(['user_id' => $user->id]);
         $this->actingAs($user)->post("/gateway/{$trx->order_id}/complete", ['method' => 'virtual_account', 'outcome' => 'deny']);
         $this->assertSame(TransaksiStatus::Failed, $trx->fresh()->status);
-        $this->get(route('checkout.result', $trx->order_id))->assertSee('Payment failed');
+        $this->get(route('checkout.result', $trx->order_id))->assertSee('Pembayaran gagal');
     }
 
     public function test_retry_after_failed_payment_creates_new_transaction(): void // Review Focus 2

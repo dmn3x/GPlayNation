@@ -33,7 +33,7 @@
                     @endphp
                     @foreach ($methods as $i => $method)
                         <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-border-strong bg-elevated p-4 transition hover:border-accent has-[:checked]:border-accent">
-                            <input type="radio" name="method_choice" value="{{ $method['value'] }}" @checked($i === 0) class="h-4 w-4 accent-accent">
+                            <input type="radio" name="method_choice" value="{{ $method['value'] }}" @checked(($preferredMethod ?? 'e_wallet') === $method['value']) class="h-4 w-4 accent-accent">
                             <x-icon :name="$method['icon']" class="h-5 w-5 text-subtle" />
                             <span class="font-medium">{{ $method['label'] }}</span>
                         </label>

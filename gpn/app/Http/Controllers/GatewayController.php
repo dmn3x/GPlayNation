@@ -15,7 +15,10 @@ class GatewayController extends Controller
     {
         $this->authorizeOwner($transaksi);
 
-        return view('gateway.show', ['trx' => $transaksi->load('game', 'iap')]);
+        return view('gateway.show', [
+            'trx' => $transaksi->load('game', 'iap'),
+            'preferredMethod' => session('gateway_method_'.$transaksi->order_id, 'e_wallet'),
+        ]);
     }
 
     public function complete(Request $request, Transaksi $transaksi, SettlementService $settlement): RedirectResponse

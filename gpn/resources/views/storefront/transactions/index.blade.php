@@ -1,56 +1,95 @@
-<x-app-layout title="Transactions">
-    <div class="space-y-6">
+<x-txn-shell active="history" title="Riwayat Transaksi · GPlayNation" :pending="$pending ?? null" :latest="$latest ?? null">
+    <div class="mx-auto max-w-[1120px] p-[45px]">
         <div class="flex flex-wrap items-end justify-between gap-4">
             <div>
-                <h1 class="screen-title">Transactions</h1>
-                <p class="text-[16.2px] text-muted">Your purchase and IAP history.</p>
+                <p class="text-[11px] font-semibold uppercase tracking-[1.54px] text-[#60A5FA]">Akun saya</p>
+                <h1 class="mt-1 text-[28px] font-bold leading-[36px] text-white">Riwayat Transaksi</h1>
+                <p class="mt-1 text-[14px] text-white/60">Pantau seluruh pembelian dan status pembayaranmu.</p>
             </div>
-            <a href="{{ route('profile.show') }}" class="btn-ghost !py-2">
-                <x-icon name="user" class="h-4 w-4" /> Back to profile
-            </a>
+            <a href="{{ route('store.index') }}" class="flex h-[42px] items-center rounded-[14px] border border-[#28282C] px-5 text-[14px] font-medium text-white transition hover:bg-white/5">Beli Game Lain</a>
         </div>
 
-        @if ($transaksis->isEmpty())
-            <div class="card flex flex-col items-center gap-3 px-8 py-16 text-center">
-                <x-icon name="wallet" class="h-10 w-10 text-faint" />
-                <h2 class="section-heading">No transactions yet</h2>
-                <p class="text-[16.2px] text-subtle">Purchases you make will show up here.</p>
-                <a href="{{ route('store.index') }}" class="btn-primary mt-2">Browse the store</a>
+        <div class="mt-6 grid grid-cols-3 divide-x divide-[#222224] border-y border-[#222224]">
+            <div class="p-6">
+                <p class="text-[12px] text-white/60">Total transaksi</p>
+                <p class="mt-1 text-[20px] font-bold text-white">{{ $stats['total'] }}</p>
+            </div>
+            <div class="p-6">
+                <p class="text-[12px] text-white/60">Berhasil</p>
+                <p class="mt-1 text-[20px] font-bold text-white">{{ $stats['success'] }}</p>
+            </div>
+            <div class="p-6">
+                <p class="text-[12px] text-white/60">Total belanja</p>
+                <p class="mt-1 text-[20px] font-bold text-white">{{ \App\Support\Money::format($stats['spent']) }}</p>
+            </div>
+        </div>
+
+        @if ($transaksis->isEmpty() && ! request('status'))
+            <div class="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-[#222224] bg-[#161618] px-8 py-16 text-center">
+                <x-icon name="wallet" class="h-10 w-10 text-white/30" />
+                <h2 class="text-[16px] font-semibold text-white">Belum ada transaksi</h2>
+                <p class="text-[14px] text-white/60">Pembelian yang kamu lakukan akan muncul di sini.</p>
+                <a href="{{ route('store.index') }}" class="mt-2 flex h-[42px] items-center rounded-[14px] bg-[#1D4ED8] px-5 text-[14px] font-medium text-white transition hover:brightness-110">Jelajahi store</a>
             </div>
         @else
-            <div class="card overflow-hidden">
+            <section class="mt-6 overflow-hidden rounded-2xl border border-[#222224] bg-[#161618]">
+                <div class="flex items-center justify-between gap-4 p-5">
+                    <h2 class="text-[14px] font-semibold text-white">Semua Transaksi</h2>
+                    <form method="GET" action="{{ route('transactions.index') }}">
+                        <select name="status" onchange="this.form.submit()" class="h-[38px] rounded-xl border border-[#222224] bg-[#0F0F10] px-3 text-[12px] text-white/70 focus:outline-none">
+                            <option value="">Semua status</option>
+                            @foreach (['pending' => 'Menunggu', 'success' => 'Berhasil', 'failed' => 'Gagal', 'expired' => 'Kedaluwarsa'] as $value => $label)
+                                <option value="{{ $value }}" @selected(request('status') === $value)>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-[16.2px]">
-                        <thead class="border-b border-border-strong text-sm text-muted">
-                            <tr>
-                                <th class="px-5 py-3 font-medium">Date</th>
-                                <th class="px-5 py-3 font-medium">Order ID</th>
-                                <th class="px-5 py-3 font-medium">Item</th>
-                                <th class="px-5 py-3 font-medium">Total</th>
-                                <th class="px-5 py-3 font-medium">Status</th>
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="h-[41px] border-y border-[#222224] text-[10px] font-semibold uppercase tracking-wide text-white/40">
+                                <th class="px-[18px] font-medium">TRANSAKSI</th>
+                                <th class="px-[18px] font-medium">PRODUK</th>
+                                <th class="px-[18px] font-medium">METODE</th>
+                                <th class="px-[18px] font-medium">TOTAL</th>
+                                <th class="px-[18px] font-medium">STATUS</th>
+                                <th class="px-[18px]"><span class="sr-only">Detail</span></th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $methodLabels = ['e_wallet' => 'E-Wallet', 'virtual_account' => 'Virtual Account', 'credit_card' => 'Credit Card'];
+                            @endphp
                             @foreach ($transaksis as $transaksi)
                                 @php
+                                    $methodValue = $transaksi->pembayaran?->method?->value;
                                     $itemName = $transaksi->iap?->name ?? $transaksi->game?->name ?? 'Unknown item';
                                 @endphp
-                                <tr class="border-b border-border-strong/60 last:border-0 transition hover:bg-elevated/40">
-                                    <td class="whitespace-nowrap px-5 py-3 text-subtle">{{ $transaksi->created_at->format('d M Y, H:i') }}</td>
-                                    <td class="px-5 py-3">
-                                        <a href="{{ route('transactions.show', $transaksi) }}" class="font-medium text-link hover:underline">{{ $transaksi->order_id }}</a>
+                                <tr class="h-[71px] border-t border-[#222224] first:border-t-0">
+                                    <td class="px-[18px]">
+                                        <p class="text-[13px] font-semibold text-white">{{ $transaksi->order_id }}</p>
+                                        <p class="text-[11px] text-white/60">{{ $transaksi->created_at->format('d M Y, H:i') }}</p>
                                     </td>
-                                    <td class="px-5 py-3">{{ $itemName }}</td>
-                                    <td class="whitespace-nowrap px-5 py-3 font-medium">{{ \App\Support\Money::format($transaksi->total) }}</td>
-                                    <td class="px-5 py-3"><x-status-pill :status="$transaksi->status" /></td>
+                                    <td class="px-[18px]">
+                                        <span class="flex items-center gap-2.5">
+                                            @if ($transaksi->game?->cover_path)
+                                                <img src="{{ asset('storage/'.$transaksi->game->cover_path) }}" alt="" aria-hidden="true" class="h-[34px] w-[44px] shrink-0 rounded object-cover">
+                                            @endif
+                                            <span class="text-[13px] font-semibold text-white">{{ $itemName }}</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-[18px] text-[13px] text-white/60">{{ $methodValue ? ($methodLabels[$methodValue] ?? $methodValue) : '—' }}</td>
+                                    <td class="px-[18px] text-[13px] font-bold text-white">{{ \App\Support\Money::format($transaksi->total) }}</td>
+                                    <td class="px-[18px]"><x-status-pill :status="$transaksi->status" /></td>
+                                    <td class="px-[18px]"><a href="{{ route('transactions.show', $transaksi->order_id) }}" class="text-[12px] font-medium text-[#60A5FA] hover:underline">Detail</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
-            <div>{{ $transaksis->links() }}</div>
+            <div class="mt-6">{{ $transaksis->links() }}</div>
         @endif
     </div>
-</x-app-layout>
+</x-txn-shell>

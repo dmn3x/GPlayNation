@@ -60,9 +60,13 @@ class CommunityTest extends TestCase
         Post::factory()->create(['body' => 'old chatter', 'hashtags' => ['retro'], 'created_at' => now()->subDays(10)]);
         Post::factory()->create(['body' => 'b #gamelokal', 'hashtags' => ['gamelokal']]);
 
-        $this->get('/community')
-            ->assertSee('#gamelokal')
-            ->assertDontSee('#retro');
+        $response = $this->get('/community');
+        $response->assertSee('#gamelokal');
+        // Figma shows the post's own hashtag pill on every card, so scope the
+        // 7-day assertion to the TRENDING NOW rail instead of the whole page.
+        $rail = \Illuminate\Support\Str::between($response->getContent(), 'TRENDING NOW', 'UPCOMING EVENTS');
+        $this->assertStringContainsString('#gamelokal', $rail);
+        $this->assertStringNotContainsString('#retro', $rail);
     }
 
     public function test_duplicate_vote_post_is_a_friendly_noop(): void

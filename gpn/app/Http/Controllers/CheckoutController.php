@@ -68,6 +68,12 @@ class CheckoutController extends Controller
         abort_unless($transaksi->user_id === auth()->id(), 403);
         $request->validate(['agreement' => ['accepted']]);
 
+        $method = $request->input('method', 'e_wallet');
+        if (! in_array($method, ['e_wallet', 'virtual_account', 'credit_card'], true)) {
+            $method = 'e_wallet';
+        }
+        session()->put('gateway_method_'.$transaksi->order_id, $method);
+
         return redirect()->route('gateway.show', $transaksi->order_id);
     }
 
