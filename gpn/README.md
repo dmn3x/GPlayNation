@@ -40,6 +40,11 @@ docker run --rm -v "$PWD":/app -w /app -p 8000:8000 gpn-php:8.4 php artisan serv
 
 Then open http://localhost:8000.
 
+> **Note (this machine):** host port 8000 is occupied by another local service
+> (honcho-api), so the live `gpn-serve` container is published on **8001** instead:
+> open **http://localhost:8001**. The run command maps `8001:8000`
+> (`-p 8001:8000 ... php artisan serve --host=0.0.0.0 --port=8000`).
+
 ## Demo accounts
 
 `php artisan migrate --seed` creates a full demo world (users, 12 published games
