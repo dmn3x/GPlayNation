@@ -10,6 +10,12 @@ use App\Http\Controllers\Dev\PromotionController;
 use App\Http\Controllers\Dev\SalesController;
 use App\Http\Controllers\Dev\SettingController;
 use App\Http\Controllers\Dev\TagController;
+use App\Http\Controllers\Admin\CommissionController as AdminCommissionController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ModerationController as AdminModerationController;
+use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\VerificationController as AdminVerificationController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\GatewayController;
 use App\Http\Controllers\HomeController;
@@ -30,10 +36,13 @@ Route::post('/webhooks/payment', [PaymentWebhookController::class, 'handle'])->n
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
 });
+
+// POST /login and /register stay reachable when already authenticated so an
+// approved developer can sign in immediately (admin VERIFY → login flow).
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
@@ -78,7 +87,19 @@ Route::middleware(['auth', 'role:developer'])->prefix('dev')->name('dev.')->grou
     Route::post('/tags/{tag}/attach', [TagController::class, 'attach'])->name('tags.attach');
     Route::post('/tags/{tag}/detach', [TagController::class, 'detach'])->name('tags.detach');
 });
-Route::get('/admin', fn () => 'ok')->middleware(['auth', 'role:admin']);    // placeholder — Task 10 replaces
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/verification', [AdminVerificationController::class, 'index'])->name('verification.index');
+    Route::post('/verification/{user}', [AdminVerificationController::class, 'update'])->name('verification.update');
+    Route::get('/moderation', [AdminModerationController::class, 'index'])->name('moderation.index');
+    Route::get('/moderation/{game}', [AdminModerationController::class, 'show'])->name('moderation.show');
+    Route::post('/moderation/{game}', [AdminModerationController::class, 'update'])->name('moderation.update');
+    Route::get('/commission', [AdminCommissionController::class, 'index'])->name('commission.index');
+    Route::post('/commission', [AdminCommissionController::class, 'store'])->name('commission.store');
+    Route::get('/payouts', [AdminPayoutController::class, 'index'])->name('payouts.index');
+    Route::post('/payouts/{developer}', [AdminPayoutController::class, 'store'])->name('payouts.store');
+    Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+});
 
 Route::middleware('auth')->group(function () {
     Route::post('/wishlist/{game}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
