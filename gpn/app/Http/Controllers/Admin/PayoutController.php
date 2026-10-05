@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Developer;
 use App\Models\Payout;
 use App\Services\PayoutService;
+use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -36,6 +37,6 @@ class PayoutController extends Controller
             return back()->with('error', 'No payable balance for this developer.');
         }
 
-        return back()->with('success', 'Payout processed: ' . \App\Support\Money::format($payout->net) . '.');
+        return back()->with('success', 'Payout processed: '.Money::format($payout->net).'.');
     }
 }

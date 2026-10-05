@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\{Download, Game, Post, PostVote, User};
+use App\Models\Download;
+use App\Models\Game;
+use App\Models\Post;
+use App\Models\PostVote;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

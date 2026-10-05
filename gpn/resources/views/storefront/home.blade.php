@@ -51,19 +51,12 @@
     </div>
 
     @if ($showIntro)
-        <div id="intro-overlay" class="fixed inset-0 z-[60] flex cursor-pointer flex-col items-center justify-center gap-4 bg-bg sm:flex-row" role="presentation" aria-hidden="true" onclick="this.remove()">
-            <span class="intro-logo inline-flex"><x-logo class="h-16 w-16" /></span>
-            <span class="intro-word text-[27px] font-semibold tracking-[-0.675px]">GPlayNation</span>
+        <div id="intro-overlay" class="overlay-leave fixed inset-0 z-50 grid place-items-center bg-bg" role="presentation" aria-hidden="true" onclick="this.remove()">
+            <div class="flex items-center gap-4">
+                <span class="logo-glow inline-flex"><x-logo class="h-16 w-16" /></span>
+                <span class="overlay-enter text-[27px] font-semibold tracking-[-0.675px]">GPlayNation</span>
+            </div>
         </div>
-        <style>
-            #intro-overlay { animation: intro-out 1.2s ease forwards; }
-            .intro-logo { opacity: 0; animation: intro-pulse 1.2s ease forwards; }
-            .intro-word { opacity: 0; animation: intro-word 1.2s ease forwards; }
-            @keyframes intro-out { 0%, 82% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-            @keyframes intro-pulse { 0% { opacity: 0; transform: scale(.7); } 25% { opacity: 1; transform: scale(1); } 50% { transform: scale(1.08); } 75% { transform: scale(1); } 100% { opacity: 1; } }
-            @keyframes intro-word { 0%, 35% { opacity: 0; transform: translateY(6px); } 70%, 100% { opacity: 1; transform: none; } }
-            @media (prefers-reduced-motion: reduce) { #intro-overlay { display: none; } }
-        </style>
         <script>
             (function () {
                 var overlay = document.getElementById('intro-overlay');
@@ -71,6 +64,25 @@
                 overlay.addEventListener('animationend', function (event) {
                     if (event.target === overlay) overlay.remove();
                 });
+            })();
+        </script>
+    @endif
+
+    @if (session('account_created'))
+        <div id="account-created" class="overlay-leave pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-bg/80 backdrop-blur-sm" role="status">
+            <div class="card overlay-enter flex flex-col items-center gap-3 px-8 py-7 text-center">
+                <x-icon name="check" class="h-10 w-10 text-success" />
+                <p class="section-heading">Account created!</p>
+                @if (session('account_created') === 'developer')
+                    <p class="text-[16.2px] text-subtle">Your studio is awaiting admin verification.</p>
+                @endif
+            </div>
+        </div>
+        <script>
+            (function () {
+                var accountCreated = document.getElementById('account-created');
+                if (! accountCreated) return;
+                accountCreated.addEventListener('animationend', function () { accountCreated.remove(); });
             })();
         </script>
     @endif

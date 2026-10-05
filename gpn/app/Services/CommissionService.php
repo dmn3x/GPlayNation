@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Komisi;
 use App\Models\KomisiTransaksi;
 use App\Models\Transaksi;
+use App\Models\User;
 use Carbon\CarbonInterface;
 
 class CommissionService
@@ -25,7 +26,7 @@ class CommissionService
         $percentage = $this->percentageFor(now());
         $komisi = Komisi::whereDate('effective_from', '<=', today())
             ->orderByDesc('effective_from')->orderByDesc('id')->first()
-            ?? Komisi::create(['admin_id' => \App\Models\User::where('role', 'admin')->value('id') ?? 1, 'percentage' => $percentage, 'effective_from' => today()]);
+            ?? Komisi::create(['admin_id' => User::where('role', 'admin')->value('id') ?? 1, 'percentage' => $percentage, 'effective_from' => today()]);
         $amount = bcmul($trx->total, bcdiv($percentage, '100', 4), 2);
 
         return KomisiTransaksi::create([

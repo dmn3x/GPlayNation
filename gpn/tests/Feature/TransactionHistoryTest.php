@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Enums\TransaksiStatus;
-use App\Models\{Pembayaran, Transaksi, User};
+use App\Models\Pembayaran;
+use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

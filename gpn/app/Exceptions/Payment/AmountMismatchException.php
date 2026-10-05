@@ -4,6 +4,4 @@ namespace App\Exceptions\Payment;
 
 use RuntimeException;
 
-class AmountMismatchException extends RuntimeException
-{
-}
+class AmountMismatchException extends RuntimeException {}

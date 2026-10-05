@@ -20,7 +20,7 @@ class SalesController extends Controller
             'game_id' => ['nullable', 'integer', Rule::exists('games', 'id')->where('developer_id', $developer->id)],
         ]);
 
-        $month = Carbon::parse(($validated['month'] ?? now()->format('Y-m')) . '-01');
+        $month = Carbon::parse(($validated['month'] ?? now()->format('Y-m')).'-01');
         $gameId = $validated['game_id'] ?? null;
 
         return view('developer.sales', [

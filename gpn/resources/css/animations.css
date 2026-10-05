@@ -1,0 +1,12 @@
+@keyframes gpn-fade-scale { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+@keyframes gpn-fade-out { to { opacity: 0; visibility: hidden; } }
+@keyframes gpn-glow { 0%,100% { filter: drop-shadow(0 0 8px #1D4ED8); } 50% { filter: drop-shadow(0 0 22px #287BF7); } }
+
+.overlay-enter { animation: gpn-fade-scale .45s ease-out both; }
+.overlay-leave { animation: gpn-fade-out .5s ease-in 1.9s both; }
+.logo-glow { animation: gpn-glow 1.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+    .overlay-enter, .overlay-leave, .logo-glow { animation: none !important; }
+    #intro-overlay, #account-created { display: none !important; }
+}

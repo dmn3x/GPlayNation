@@ -2,7 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\{Game, Iap, IapOwnership, Library, User, Wishlist};
+use App\Models\Game;
+use App\Models\Iap;
+use App\Models\IapOwnership;
+use App\Models\Library;
+use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

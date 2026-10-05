@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\{Game, Promotion, Transaksi, User};
+use App\Models\Game;
+use App\Models\Promotion;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,6 +16,7 @@ class PromotionTest extends TestCase
     private function devWithGame(): array
     {
         $dev = User::factory()->verifiedDeveloper()->create();
+
         return [$dev, Game::factory()->for($dev->developer)->published()->create(['price' => '100000.00'])];
     }
 
@@ -74,6 +78,15 @@ class PromotionTest extends TestCase
         $this->assertSame(2, Promotion::where('game_id', $game->id)->count());
     }
 
+    public function test_garbage_dates_fail_validation_instead_of_500(): void
+    {
+        [$dev, $game] = $this->devWithGame();
+        $this->actingAs($dev)->from('/dev/promotion')->post('/dev/promotion', [
+            'game_id' => $game->id, 'discount_percent' => 10,
+            'starts_at' => 'not-a-date', 'ends_at' => 'also-not-a-date',
+        ])->assertSessionHasErrors(['starts_at', 'ends_at']);
+    }
+
     public function test_expired_promotion_no_longer_applies(): void
     {
         [$dev, $game] = $this->devWithGame();
@@ -96,7 +109,7 @@ class PromotionTest extends TestCase
         $dev = User::factory()->verifiedDeveloper()->create();
         $game = Game::factory()->for($dev->developer)->published()->create();
         $this->actingAs($dev)->post('/dev/tags', ['name' => 'pixel-art'])->assertRedirect();
-        $tag = \App\Models\Tag::sole();
+        $tag = Tag::sole();
 
         $this->actingAs($dev)->post("/dev/tags/{$tag->id}/attach", ['game_id' => $game->id]);
         $this->assertTrue($game->fresh()->tags->contains($tag));

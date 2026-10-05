@@ -3,7 +3,8 @@
 namespace Tests\Feature;
 
 use App\Enums\GameStatus;
-use App\Models\{Game, User};
+use App\Models\Game;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -47,7 +48,7 @@ class ModerationTest extends TestCase
         $game = Game::factory()->for($dev->developer)->create(['status' => GameStatus::Rejected]);
 
         $this->actingAs($dev)->put("/dev/games/{$game->id}", [
-            'name' => $game->name . ' fixed', 'description' => $game->description, 'genre' => $game->genre, 'price' => '10000',
+            'name' => $game->name.' fixed', 'description' => $game->description, 'genre' => $game->genre, 'price' => '10000',
         ]);
         $this->assertSame(GameStatus::PendingReview, $game->fresh()->status);
         $this->actingAs($admin)->get('/admin/moderation')->assertSee($game->fresh()->name);

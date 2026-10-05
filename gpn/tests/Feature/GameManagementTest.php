@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Enums\GameStatus;
-use App\Models\{Game, Iap, User};
+use App\Models\Game;
+use App\Models\Iap;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -116,6 +118,9 @@ class GameManagementTest extends TestCase
             'name' => '1000 Coins', 'price' => '12000', 'type' => 'currency', 'is_active' => '0',
         ]);
         $this->assertFalse($iap->fresh()->is_active);
+
+        $this->actingAs($dev)->get("/dev/games/{$game->id}/edit")
+            ->assertOk()->assertSee('1000 Coins')->assertSee("/dev/iaps/{$iap->id}", escape: false);
     }
 
     public function test_settings_update_studio_and_payout_details(): void

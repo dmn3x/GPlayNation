@@ -9,7 +9,9 @@ use Illuminate\View\Component;
 class AreaChart extends Component
 {
     public string $line;
+
     public string $area;
+
     public float $max;
 
     /** @param array<int, array{label: string, value: int|float}> $points */
@@ -24,7 +26,7 @@ class AreaChart extends Component
             $coords[] = [round($i * $w / $n, 1), round($h - 8 - ($p['value'] / $this->max) * ($h - 24), 1)];
         }
         $this->line = implode(' ', array_map(fn ($c) => "$c[0],$c[1]", $coords));
-        $this->area = "0,$h " . $this->line . " $w,$h";
+        $this->area = "0,$h ".$this->line." $w,$h";
     }
 
     public function render(): View|Closure

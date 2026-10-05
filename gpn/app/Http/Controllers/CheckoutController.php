@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\TransaksiStatus;
 use App\Models\Game;
 use App\Models\Iap;
+use App\Models\IapOwnership;
+use App\Models\Library;
 use App\Models\Transaksi;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,7 +25,7 @@ class CheckoutController extends Controller
                 return redirect()->route('games.download', $game->slug);
             }
             // NB: check the Library table directly — Game::ownedBy() counts free games as owned.
-            if (\App\Models\Library::where('user_id', $user->id)->where('game_id', $game->id)->exists()) {
+            if (Library::where('user_id', $user->id)->where('game_id', $game->id)->exists()) {
                 return redirect()->route('store.show', $game->slug)->with('error', 'You already own this game.');
             }
             $iap = null;
@@ -31,11 +33,11 @@ class CheckoutController extends Controller
         } else {
             $iap = Iap::where('is_active', true)->findOrFail($id);
             $game = $iap->game;
-            $ownsBase = \App\Models\Library::where('user_id', $user->id)->where('game_id', $game->id)->exists();
+            $ownsBase = Library::where('user_id', $user->id)->where('game_id', $game->id)->exists();
             if (! $ownsBase && ! $game->isFree()) {
                 return redirect()->route('store.show', $game->slug)->with('error', 'You need the base game before buying add-ons.');
             }
-            if (\App\Models\IapOwnership::where('user_id', $user->id)->where('iap_id', $iap->id)->exists()) {
+            if (IapOwnership::where('user_id', $user->id)->where('iap_id', $iap->id)->exists()) {
                 return redirect()->route('store.show', $game->slug)->with('error', 'You already own this item.');
             }
             $total = $iap->price;

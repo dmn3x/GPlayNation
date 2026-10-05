@@ -2,8 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Enums\{TransaksiStatus, LibrarySource};
-use App\Models\{Iap, IapOwnership, Komisi, KomisiTransaksi, Library, Pembayaran, Transaksi, User};
+use App\Enums\LibrarySource;
+use App\Enums\TransaksiStatus;
+use App\Models\Game;
+use App\Models\Iap;
+use App\Models\IapOwnership;
+use App\Models\Komisi;
+use App\Models\KomisiTransaksi;
+use App\Models\Library;
+use App\Models\Pembayaran;
+use App\Models\Transaksi;
 use App\Services\Payment\Signature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -15,6 +23,7 @@ class PaymentWebhookTest extends TestCase
     private function signedPayload(Transaksi $trx, string $status = 'settlement', ?string $amount = null): array
     {
         $gross = $amount ?? Signature::gross($trx->total);
+
         return [
             'order_id' => $trx->order_id,
             'status_code' => '200',
@@ -141,7 +150,7 @@ class PaymentWebhookTest extends TestCase
 
     public function test_iap_settlement_grants_iap_not_base_game(): void // legacy bug regression
     {
-        $game = \App\Models\Game::factory()->published()->create();
+        $game = Game::factory()->published()->create();
         $iap = Iap::factory()->for($game)->create();
         $trx = Transaksi::factory()->create(['game_id' => $game->id, 'iap_id' => $iap->id, 'type' => 'iap']);
         $this->postJson('/webhooks/payment', $this->signedPayload($trx))->assertOk();

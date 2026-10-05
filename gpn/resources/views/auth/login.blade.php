@@ -5,18 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sign in · GPlayNation</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        @keyframes account-created {
-            0% { opacity: 0; transform: scale(.97); }
-            12% { opacity: 1; transform: scale(1); }
-            82% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        #account-created { animation: account-created 2.4s ease-in-out forwards; }
-        @media (prefers-reduced-motion: reduce) {
-            #account-created { animation: none; }
-        }
-    </style>
 </head>
 <body class="flex min-h-screen items-center justify-center bg-bg px-6 py-12">
     <div class="w-full max-w-[440px]">
@@ -57,8 +45,8 @@
     </div>
 
     @if (session('account_created'))
-        <div id="account-created" class="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-bg/80 backdrop-blur-sm" role="status">
-            <div class="card flex flex-col items-center gap-3 px-8 py-7 text-center">
+        <div id="account-created" class="overlay-leave pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-bg/80 backdrop-blur-sm" role="status">
+            <div class="card overlay-enter flex flex-col items-center gap-3 px-8 py-7 text-center">
                 <x-icon name="check" class="h-10 w-10 text-success" />
                 <p class="section-heading">Account created!</p>
                 @if (session('account_created') === 'developer')
@@ -66,12 +54,12 @@
                 @endif
             </div>
         </div>
-    @endif
-
-    @if (session('account_created'))
         <script>
-            var accountCreated = document.getElementById('account-created');
-            accountCreated.addEventListener('animationend', function () { accountCreated.remove(); });
+            (function () {
+                var accountCreated = document.getElementById('account-created');
+                if (! accountCreated) return;
+                accountCreated.addEventListener('animationend', function () { accountCreated.remove(); });
+            })();
         </script>
     @endif
 

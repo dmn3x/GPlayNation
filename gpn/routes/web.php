@@ -1,7 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\CommissionController as AdminCommissionController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ModerationController as AdminModerationController;
+use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\VerificationController as AdminVerificationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\Dev\DashboardController;
 use App\Http\Controllers\Dev\GameController;
 use App\Http\Controllers\Dev\IapController;
@@ -10,21 +17,14 @@ use App\Http\Controllers\Dev\PromotionController;
 use App\Http\Controllers\Dev\SalesController;
 use App\Http\Controllers\Dev\SettingController;
 use App\Http\Controllers\Dev\TagController;
-use App\Http\Controllers\Admin\CommissionController as AdminCommissionController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\ModerationController as AdminModerationController;
-use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
-use App\Http\Controllers\Admin\ReportController as AdminReportController;
-use App\Http\Controllers\Admin\VerificationController as AdminVerificationController;
-use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\GatewayController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\VoteController;
 use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\VoteController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 

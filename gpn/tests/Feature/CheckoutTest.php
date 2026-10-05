@@ -2,8 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Enums\{GameStatus, TransaksiStatus};
-use App\Models\{Game, Iap, Library, Transaksi, User};
+use App\Enums\TransaksiStatus;
+use App\Models\Game;
+use App\Models\Iap;
+use App\Models\Library;
+use App\Models\Promotion;
+use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -27,7 +32,7 @@ class CheckoutTest extends TestCase
     {
         $user = User::factory()->create();
         $game = Game::factory()->published()->create(['price' => '200000.00']);
-        \App\Models\Promotion::factory()->create(['game_id' => $game->id, 'discount_percent' => 25]);
+        Promotion::factory()->create(['game_id' => $game->id, 'discount_percent' => 25]);
         $this->actingAs($user)->post("/checkout/game/{$game->id}");
         $this->assertSame('150000.00', Transaksi::sole()->total);
     }

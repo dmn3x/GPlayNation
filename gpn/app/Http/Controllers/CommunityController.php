@@ -14,7 +14,8 @@ class CommunityController extends Controller
     {
         $posts = Post::with('user', 'votes')->latest()
             ->when(request('tag'), fn ($q) => $q->whereJsonContains('hashtags', request('tag')))
-            ->paginate(20); // score via Post::getScoreAttribute()
+            ->paginate(20)
+            ->withQueryString(); // score via Post::getScoreAttribute()
 
         $trending = Post::where('created_at', '>=', now()->subDays(7))
             ->get()                 // hydrate models so the hashtags 'array' cast applies

@@ -4,7 +4,12 @@ namespace Tests\Feature;
 
 use App\Enums\GameStatus;
 use App\Enums\LibrarySource;
-use App\Models\{Download, Game, Library, Promotion, User, Wishlist};
+use App\Models\Download;
+use App\Models\Game;
+use App\Models\Library;
+use App\Models\Promotion;
+use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;

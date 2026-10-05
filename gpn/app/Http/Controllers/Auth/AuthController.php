@@ -41,7 +41,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return back()->with('error', 'Your developer account was rejected: ' . ($user->rejection_reason ?? 'no reason given'));
+            return back()->with('error', 'Your developer account was rejected: '.($user->rejection_reason ?? 'no reason given'));
         }
 
         $request->session()->regenerate();

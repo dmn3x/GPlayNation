@@ -29,7 +29,7 @@ class DashboardController extends Controller
             ->groupBy('d')
             ->pluck('s', 'd');
         $series = collect(range(1, now()->daysInMonth))
-            ->map(fn ($day) => ['label' => (string) $day, 'value' => (float) ($daily[now()->format('Y-m-') . str_pad((string) $day, 2, '0', STR_PAD_LEFT)] ?? 0)])
+            ->map(fn ($day) => ['label' => (string) $day, 'value' => (float) ($daily[now()->format('Y-m-').str_pad((string) $day, 2, '0', STR_PAD_LEFT)] ?? 0)])
             ->all();
 
         return view('developer.dashboard', compact('gross', 'net', 'sales', 'downloads', 'recent', 'series'));

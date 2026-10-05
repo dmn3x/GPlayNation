@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Dev;
 
+use App\Models\Promotion;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class PromotionRequest extends FormRequest
 {
@@ -21,9 +23,15 @@ class PromotionRequest extends FormRequest
             'discount_percent' => ['required', 'integer', 'min:1', 'max:90'],
             'starts_at' => ['required', 'date'],
             'ends_at' => ['required', 'date', 'after:starts_at', function ($attribute, $value, $fail) {
-                $overlap = \App\Models\Promotion::where('game_id', $this->input('game_id'))
-                    ->where('ends_at', '>', \Illuminate\Support\Carbon::parse($this->input('starts_at')))
-                    ->where('starts_at', '<', \Illuminate\Support\Carbon::parse($value))
+                try {
+                    $startsAt = Carbon::parse($this->input('starts_at'));
+                    $endsAt = Carbon::parse($value);
+                } catch (\Throwable) {
+                    return; // unparseable input is already flagged by the date rules
+                }
+                $overlap = Promotion::where('game_id', $this->input('game_id'))
+                    ->where('ends_at', '>', $startsAt)
+                    ->where('starts_at', '<', $endsAt)
                     ->exists();
                 if ($overlap) {
                     $fail('This game already has a promotion in that period.');

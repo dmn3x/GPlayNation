@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\{Game, KomisiTransaksi, Pembayaran, Transaksi, User};
+use App\Models\Game;
+use App\Models\KomisiTransaksi;
+use App\Models\Pembayaran;
+use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,6 +25,7 @@ class ReportsTest extends TestCase
                 'developer_amount' => bcmul($total, '0.8', 2),
             ]);
         }
+
         return $trx;
     }
 
@@ -56,7 +61,7 @@ class ReportsTest extends TestCase
         $game = Game::factory()->for($dev->developer)->published()->create();
         $this->settledAt($game, '100000.00', now()->toDateTimeString());
 
-        $this->actingAs($admin)->get('/admin/reports?tab=commission&month=' . now()->format('Y-m'))
+        $this->actingAs($admin)->get('/admin/reports?tab=commission&month='.now()->format('Y-m'))
             ->assertSee($dev->developer->studio_name)
             ->assertSee('Rp 20.000')
             ->assertSee('Rp 80.000');

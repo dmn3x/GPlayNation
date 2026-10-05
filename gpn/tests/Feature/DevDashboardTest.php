@@ -2,7 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\{Download, KomisiTransaksi, Pembayaran, Transaksi, User};
+use App\Models\Download;
+use App\Models\Game;
+use App\Models\KomisiTransaksi;
+use App\Models\Pembayaran;
+use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +18,7 @@ class DevDashboardTest extends TestCase
     public function test_dashboard_shows_real_counts_and_series(): void
     {
         $dev = User::factory()->verifiedDeveloper()->create();
-        $game = \App\Models\Game::factory()->for($dev->developer)->published()->create();
+        $game = Game::factory()->for($dev->developer)->published()->create();
         $trx = Transaksi::factory()->success()->create(['game_id' => $game->id, 'total' => '100000.00']);
         Pembayaran::factory()->create(['transaksi_id' => $trx->id, 'paid_at' => now()]);
         KomisiTransaksi::factory()->create(['transaksi_id' => $trx->id, 'amount' => '20000.00', 'developer_amount' => '80000.00']);
@@ -29,7 +34,7 @@ class DevDashboardTest extends TestCase
     public function test_payouts_page_shows_unpaid_balance(): void
     {
         $dev = User::factory()->verifiedDeveloper()->create();
-        $game = \App\Models\Game::factory()->for($dev->developer)->published()->create();
+        $game = Game::factory()->for($dev->developer)->published()->create();
         $trx = Transaksi::factory()->success()->create(['game_id' => $game->id]);
         KomisiTransaksi::factory()->create(['transaksi_id' => $trx->id, 'developer_amount' => '80000.00', 'payout_id' => null]);
 

@@ -9,14 +9,14 @@
 </head>
 <body class="min-h-screen">
     <header class="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
-        <div class="mx-auto flex h-[72px] max-w-[1440px] items-center gap-6 px-12">
+        <div class="mx-auto flex h-[72px] max-w-[1440px] items-center gap-6 px-4 md:px-12">
             <a href="{{ route('home') }}" class="flex items-center gap-3"><x-logo class="h-9 w-9" /><span class="text-[18.9px] font-semibold">GPlayNation</span></a>
             <nav class="flex items-center gap-1">
                 <a href="{{ route('home') }}" @class(['nav-pill', 'nav-pill-active' => request()->routeIs('home')])>Home</a>
                 <a href="{{ route('store.index') }}" @class(['nav-pill', 'nav-pill-active' => request()->routeIs('store.*')])>Store</a>
                 <a href="{{ route('community.index') }}" @class(['nav-pill', 'nav-pill-active' => request()->routeIs('community.*')])>Community</a>
             </nav>
-            <form action="{{ route('store.index') }}" method="GET" class="ml-auto w-72">
+            <form action="{{ route('store.index') }}" method="GET" class="ml-auto hidden w-72 lg:block">
                 <input name="q" value="{{ request('q') }}" placeholder="Search local games…" class="input !py-2">
             </form>
             @auth
@@ -29,7 +29,7 @@
             @endauth
         </div>
     </header>
-    <main class="mx-auto max-w-[1440px] px-12 py-10">
+    <main class="mx-auto max-w-[1440px] px-4 py-10 md:px-12">
         {{ $slot }}
     </main>
     <x-toasts />

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Dev;
 
+use App\Enums\GameStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dev\GameStoreRequest;
 use App\Http\Requests\Dev\GameUpdateRequest;
-use App\Enums\GameStatus;
 use App\Models\Game;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
@@ -30,7 +30,7 @@ class GameController extends Controller
     {
         abort_unless($game->developer_id === auth()->user()->developer->id, 403);
 
-        return view('developer.games.edit', ['game' => $game->load('screenshots'), 'genres' => Game::GENRES]);
+        return view('developer.games.edit', ['game' => $game->load('screenshots', 'iaps'), 'genres' => Game::GENRES]);
     }
 
     public function store(GameStoreRequest $request): RedirectResponse // SRS 3.1.2.4
@@ -39,7 +39,7 @@ class GameController extends Controller
         $game = DB::transaction(function () use ($request, $data) {
             $game = auth()->user()->developer->games()->create([
                 ...Arr::only($data, ['name', 'description', 'genre']),
-                'slug' => Str::slug($data['name']) . '-' . Str::lower(Str::random(4)),
+                'slug' => Str::slug($data['name']).'-'.Str::lower(Str::random(4)),
                 'price' => $data['price'],
                 'trailer_url' => $data['trailer_url'] ?? null,
                 'cover_path' => $request->file('cover')->store('covers', 'public'),
@@ -49,6 +49,7 @@ class GameController extends Controller
             foreach ($request->file('screenshots', []) as $i => $shot) {
                 $game->screenshots()->create(['path' => $shot->store('screenshots', 'public'), 'sort' => $i]);
             }
+
             return $game;
         });
 

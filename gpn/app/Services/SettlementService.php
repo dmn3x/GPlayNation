@@ -66,7 +66,7 @@ class SettlementService
                 'transaksi_id' => $trx->id,
                 'method' => $payload['payment_type'],
                 'amount' => $trx->total,
-                'reference_no' => 'REF-' . strtoupper(Str::random(10)),
+                'reference_no' => 'REF-'.strtoupper(Str::random(10)),
                 'payload' => $payload,
                 'paid_at' => now(),
             ]);

@@ -57,20 +57,21 @@ class ReportService
 
         return collect(range(1, $month->daysInMonth))->map(fn ($day) => [
             'label' => (string) $day,
-            'value' => (float) ($daily[$month->format('Y-m-') . str_pad((string) $day, 2, '0', STR_PAD_LEFT)] ?? 0),
+            'value' => (float) ($daily[$month->format('Y-m-').str_pad((string) $day, 2, '0', STR_PAD_LEFT)] ?? 0),
         ])->all();
     }
 
     public function adminTransactions(array $filters): LengthAwarePaginator // SRS 3.1.5.3
     {
         $month = $filters['month'] ?? null; // 'Y-m' or null
+
         return Transaksi::with('user', 'game', 'pembayaran')
             ->when($filters['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
             ->when($month, function ($q) use ($month) {
-                $m = Carbon::parse($month . '-01'); // never createFromFormat('Y-m') — fills with current day/time
+                $m = Carbon::parse($month.'-01'); // never createFromFormat('Y-m') — fills with current day/time
                 $q->where(function ($qq) use ($m) {
                     $qq->whereHas('pembayaran', fn ($p) => $p->whereBetween('paid_at', [$m->copy()->startOfMonth(), $m->copy()->endOfMonth()]))
-                       ->orWhere(fn ($n) => $n->where('status', '!=', 'success')->whereBetween('transaksis.created_at', [$m->copy()->startOfMonth(), $m->copy()->endOfMonth()]));
+                        ->orWhere(fn ($n) => $n->where('status', '!=', 'success')->whereBetween('transaksis.created_at', [$m->copy()->startOfMonth(), $m->copy()->endOfMonth()]));
                 });
             })
             ->latest('id')

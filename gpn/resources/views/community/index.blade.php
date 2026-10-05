@@ -47,7 +47,7 @@
                 @forelse ($posts as $post)
                     <article class="card p-5">
                         <div class="flex items-center gap-3">
-                            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-semibold text-white">{{ strtoupper(substr($post->user->name, 0, 1)) }}</span>
+                            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-semibold text-white">{{ strtoupper(mb_substr($post->user->name, 0, 1)) }}</span>
                             <div>
                                 <p class="font-medium">{{ $post->user->name }}</p>
                                 <p class="text-sm text-faint">{{ $post->created_at->diffForHumans() }}</p>

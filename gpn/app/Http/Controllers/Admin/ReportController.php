@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaksi;
 use App\Services\ReportService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class ReportController extends Controller
         $status = $validated['status'] ?? null;
 
         if ($tab === 'commission') {
-            $month = Carbon::parse(($monthParam ?? now()->format('Y-m')) . '-01');
+            $month = Carbon::parse(($monthParam ?? now()->format('Y-m')).'-01');
 
             return view('admin.reports', [
                 'tab' => $tab,
@@ -38,10 +39,10 @@ class ReportController extends Controller
 
         $transactions = $reports->adminTransactions(['status' => $status, 'month' => $monthParam]);
 
-        $total = (string) \App\Models\Transaksi::query()
+        $total = (string) Transaksi::query()
             ->when($status, fn ($q, $s) => $q->where('status', $s))
             ->when($monthParam, function ($q) use ($monthParam) {
-                $m = Carbon::parse($monthParam . '-01');
+                $m = Carbon::parse($monthParam.'-01');
                 $q->where(function ($qq) use ($m) {
                     $qq->whereHas('pembayaran', fn ($p) => $p->whereBetween('paid_at', [$m->copy()->startOfMonth(), $m->copy()->endOfMonth()]))
                         ->orWhere(fn ($n) => $n->where('status', '!=', 'success')->whereBetween('transaksis.created_at', [$m->copy()->startOfMonth(), $m->copy()->endOfMonth()]));

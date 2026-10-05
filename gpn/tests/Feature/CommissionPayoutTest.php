@@ -2,8 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Enums\TransaksiStatus;
-use App\Models\{Developer, Game, Komisi, KomisiTransaksi, Payout, Transaksi, User};
+use App\Models\Game;
+use App\Models\Komisi;
+use App\Models\KomisiTransaksi;
+use App\Models\Payout;
+use App\Models\Transaksi;
+use App\Models\User;
+use App\Services\CommissionService;
 use App\Services\PayoutService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,8 +24,8 @@ class CommissionPayoutTest extends TestCase
             ->assertRedirect();
         $this->assertSame(1, Komisi::count());
         // Settlement today still falls back to default 20% since 15.5% isn't effective yet
-        $this->assertSame('20.00', app(\App\Services\CommissionService::class)->percentageFor(now()));
-        $this->assertSame('15.50', app(\App\Services\CommissionService::class)->percentageFor(now()->addMonth()));
+        $this->assertSame('20.00', app(CommissionService::class)->percentageFor(now()));
+        $this->assertSame('15.50', app(CommissionService::class)->percentageFor(now()->addMonth()));
     }
 
     public function test_payout_sums_unpaid_and_stamps_rows(): void // SRS 3.1.4.3

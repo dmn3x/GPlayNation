@@ -11,7 +11,7 @@ class Signature
 
     public static function make(string $orderId, string $statusCode, string $grossAmount, string $key): string
     {
-        return hash('sha512', $orderId . $statusCode . $grossAmount . $key);
+        return hash('sha512', $orderId.$statusCode.$grossAmount.$key);
     }
 
     public static function isValid(array $payload, string $key): bool

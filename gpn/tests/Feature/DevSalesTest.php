@@ -2,7 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\{Download, Game, KomisiTransaksi, Pembayaran, Transaksi, User};
+use App\Models\Download;
+use App\Models\Game;
+use App\Models\KomisiTransaksi;
+use App\Models\Pembayaran;
+use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,6 +24,7 @@ class DevSalesTest extends TestCase
             'amount' => bcmul($total, '0.2', 2),
             'developer_amount' => bcmul($total, '0.8', 2),
         ]);
+
         return $trx;
     }
 
@@ -35,7 +41,7 @@ class DevSalesTest extends TestCase
             ->assertSee('Rp 100.000')
             ->assertDontSee('Rp 50.000');
 
-        $this->actingAs($dev)->get('/dev/sales?month=2026-03&game_id=' . $gameB->id)
+        $this->actingAs($dev)->get('/dev/sales?month=2026-03&game_id='.$gameB->id)
             ->assertSee('No sales in this period'); // SRS alternate flow
     }
 
@@ -46,7 +52,7 @@ class DevSalesTest extends TestCase
         $this->settledSale($game, '100000.00', now()->toDateTimeString());
         Download::factory()->count(3)->create(['game_id' => $game->id]);
 
-        $this->actingAs($dev)->get('/dev/sales?month=' . now()->format('Y-m'))
+        $this->actingAs($dev)->get('/dev/sales?month='.now()->format('Y-m'))
             ->assertSee('Rp 100.000')
             ->assertSee('Rp 20.000')
             ->assertSee('Rp 80.000');
