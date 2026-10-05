@@ -40,6 +40,11 @@
                     @endforeach
                 </fieldset>
 
+                <div class="rounded-xl border border-border bg-elevated p-4 text-sm">
+                    <p class="text-faint">Simulated instrument <span class="font-semibold text-subtle">(fake — for display only)</span></p>
+                    <p id="gateway-instrument" class="mt-1 font-mono font-semibold">GPN-PAY-0812-XXXX</p>
+                </div>
+
                 <div class="space-y-3">
                     <form method="POST" action="{{ route('gateway.complete', $trx->order_id) }}" data-gateway-form>
                         @csrf
@@ -75,6 +80,22 @@
     </main>
 
     <script>
+        var instruments = {
+            e_wallet: 'GPN-PAY-0812-XXXX',
+            virtual_account: '8808 1234 5678 9012',
+            credit_card: '4111 11•• •••• 1111'
+        };
+        function syncInstrument() {
+            var chosen = document.querySelector('input[name="method_choice"]:checked');
+            if (! chosen) {
+                return;
+            }
+            document.getElementById('gateway-instrument').textContent = instruments[chosen.value] || '';
+        }
+        document.querySelectorAll('input[name="method_choice"]').forEach(function (radio) {
+            radio.addEventListener('change', syncInstrument);
+        });
+        syncInstrument();
         document.querySelectorAll('form[data-gateway-form]').forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 var chosen = document.querySelector('input[name="method_choice"]:checked');

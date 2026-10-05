@@ -32,6 +32,6 @@ class Post extends Model
 
     public function getScoreAttribute(): int
     {
-        return $this->votes()->sum('value');
+        return (int) $this->votes->sum('value');
     }
 }

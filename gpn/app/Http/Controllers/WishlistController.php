@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use App\Models\Wishlist;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 
 class WishlistController extends Controller
@@ -18,7 +19,11 @@ class WishlistController extends Controller
             return back()->with('success', 'Removed from wishlist');
         }
 
-        Wishlist::create(['user_id' => auth()->id(), 'game_id' => $game->id]);
+        try {
+            Wishlist::create(['user_id' => auth()->id(), 'game_id' => $game->id]);
+        } catch (QueryException) {
+            // Unique (user_id, game_id) violation — a concurrent request already wishlisted.
+        }
 
         return back()->with('success', 'Added to wishlist');
     }

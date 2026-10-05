@@ -161,4 +161,17 @@ class GameManagementTest extends TestCase
         ])->assertRedirect();
         $this->assertSame(GameStatus::PendingReview, $game->fresh()->status);
     }
+
+    public function test_clearing_trailer_triggers_remoderation_and_persists_null(): void
+    {
+        $dev = $this->dev();
+        $game = Game::factory()->for($dev->developer)->published()->create(['trailer_url' => 'https://example.com/old']);
+        $this->actingAs($dev)->put("/dev/games/{$game->id}", [
+            'name' => $game->name, 'description' => $game->description, 'genre' => $game->genre,
+            'price' => $game->price, 'trailer_url' => null,
+        ])->assertRedirect();
+        $fresh = $game->fresh();
+        $this->assertNull($fresh->trailer_url);
+        $this->assertSame(GameStatus::PendingReview, $fresh->status);
+    }
 }

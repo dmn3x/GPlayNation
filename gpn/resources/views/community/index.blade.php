@@ -27,14 +27,14 @@
                         @csrf
                         <textarea name="body" rows="3" placeholder="Share something with the community… (use #tags)" class="input" required>{{ old('body') }}</textarea>
                         @error('body')
-                            <p class="text-sm text-red-500">{{ $message }}</p>
+                            <p class="text-sm text-danger">{{ $message }}</p>
                         @enderror
                         <div class="flex items-center gap-3">
                             <input type="file" name="image" accept="image/*" class="text-sm text-subtle">
                             <button type="submit" class="btn-primary ml-auto !py-2">Post</button>
                         </div>
                         @error('image')
-                            <p class="text-sm text-red-500">{{ $message }}</p>
+                            <p class="text-sm text-danger">{{ $message }}</p>
                         @enderror
                     </form>
                 @else

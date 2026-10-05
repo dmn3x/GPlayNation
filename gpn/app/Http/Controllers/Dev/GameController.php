@@ -64,11 +64,11 @@ class GameController extends Controller
         $metadataChanged = $game->name !== $data['name']
             || $game->description !== $data['description']
             || $game->genre !== $data['genre']
-            || $game->trailer_url !== ($data['trailer_url'] ?? $game->trailer_url)
+            || $game->trailer_url !== (array_key_exists('trailer_url', $data) ? $data['trailer_url'] : $game->trailer_url)
             || $request->hasFile('cover') || $request->hasFile('file') || $request->hasFile('screenshots');
 
         DB::transaction(function () use ($request, $game, $data, $metadataChanged) {
-            $updates = Arr::only($data, ['name', 'description', 'genre']) + ['price' => $data['price'], 'trailer_url' => $data['trailer_url'] ?? $game->trailer_url];
+            $updates = Arr::only($data, ['name', 'description', 'genre']) + ['price' => $data['price'], 'trailer_url' => array_key_exists('trailer_url', $data) ? $data['trailer_url'] : $game->trailer_url];
             if ($request->hasFile('cover')) {
                 $oldCover = $game->cover_path;
                 $updates['cover_path'] = $request->file('cover')->store('covers', 'public');

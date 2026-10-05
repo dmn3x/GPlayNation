@@ -110,4 +110,67 @@ class StorefrontTest extends TestCase
             ->assertOk()
             ->assertHeader('content-disposition');
     }
+
+    public function test_avatar_menu_with_logout_for_authenticated_users(): void
+    {
+        $this->get('/')->assertOk()->assertDontSee('Log out');
+
+        $user = User::factory()->create();
+        $this->actingAs($user)->get('/')
+            ->assertOk()
+            ->assertSee('Log out', escape: false)
+            ->assertSee(route('profile.show'), escape: false)
+            ->assertSee(route('transactions.index'), escape: false)
+            ->assertDontSee('Developer portal')
+            ->assertDontSee('Admin panel');
+    }
+
+    public function test_avatar_menu_shows_role_links(): void
+    {
+        $dev = User::factory()->verifiedDeveloper()->create();
+        $this->actingAs($dev)->get('/')->assertSee('Developer portal')->assertDontSee('Admin panel');
+        auth()->logout();
+
+        $admin = User::factory()->admin()->create();
+        $this->actingAs($admin)->get('/')->assertSee('Admin panel')->assertDontSee('Developer portal');
+    }
+
+    public function test_rejected_game_download_is_not_found_for_non_owner(): void
+    {
+        $user = User::factory()->create();
+        $game = Game::factory()->create(['status' => GameStatus::Rejected]);
+
+        $this->actingAs($user)->get("/games/{$game->slug}/download")->assertNotFound();
+    }
+
+    public function test_free_unpublished_game_download_is_not_found_and_claims_nothing(): void
+    {
+        $user = User::factory()->create();
+        $game = Game::factory()->free()->create(['status' => GameStatus::PendingReview]);
+
+        $this->actingAs($user)->get("/games/{$game->slug}/download")->assertNotFound();
+        $this->assertDatabaseMissing('libraries', ['user_id' => $user->id, 'game_id' => $game->id]);
+    }
+
+    public function test_owner_of_archived_game_can_still_download(): void
+    {
+        Storage::fake('public');
+        Storage::put('installers/game.zip', 'demo');
+        $user = User::factory()->create();
+        $game = Game::factory()->create(['status' => GameStatus::Archived, 'file_path' => 'installers/game.zip']);
+        Library::factory()->create(['user_id' => $user->id, 'game_id' => $game->id]);
+
+        $this->actingAs($user)->get("/games/{$game->slug}/download")->assertOk();
+    }
+
+    public function test_wishlist_toggle_is_friendly_when_row_already_exists(): void
+    {
+        $user = User::factory()->create();
+        $game = Game::factory()->published()->create();
+        Wishlist::factory()->create(['user_id' => $user->id, 'game_id' => $game->id]);
+
+        $this->actingAs($user)->from('/store')->post("/wishlist/{$game->id}")
+            ->assertRedirect('/store')
+            ->assertSessionHas('success');
+    }
 }

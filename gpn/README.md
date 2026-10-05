@@ -56,6 +56,7 @@ with covers + installers, transactions, community posts). All passwords are `pas
 | dev@gplaynation.test     | `password` | developer, verified (Studio Nusantara) |
 | dev2@gplaynation.test    | `password` | developer, verified (Arus Digital)     |
 | pending@gplaynation.test | `password` | developer, pending verification        |
+| rejected@gplaynation.test | `password` | developer, rejected (Studio Bodong)     |
 | user@gplaynation.test    | `password` | user                       |
 | user2@gplaynation.test   | `password` | user                       |
 | user3@gplaynation.test   | `password` | user                       |

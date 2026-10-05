@@ -65,6 +65,17 @@ class CommunityTest extends TestCase
             ->assertDontSee('#retro');
     }
 
+    public function test_duplicate_vote_post_is_a_friendly_noop(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
+        PostVote::factory()->create(['post_id' => $post->id, 'user_id' => $user->id, 'value' => 1]);
+
+        $this->actingAs($user)->from('/community')->post("/posts/{$post->id}/vote", ['value' => 1])
+            ->assertRedirect('/community')
+            ->assertSessionHas('success');
+    }
+
     public function test_right_rail_shows_top_downloaded_this_month(): void
     {
         $hot = Game::factory()->published()->create(['name' => 'Viral Game']);

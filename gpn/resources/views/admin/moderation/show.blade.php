@@ -45,7 +45,7 @@
                     @foreach ($game->iaps as $iap)
                         <tr class="border-b border-border last:border-0">
                             <td class="px-4 py-3">{{ $iap->name }}</td>
-                            <td class="px-4 py-3 text-subtle">{{ $iap->type }}</td>
+                            <td class="px-4 py-3 text-subtle">{{ ucfirst($iap->type->value) }}</td>
                             <td class="px-4 py-3">{{ \App\Support\Money::format($iap->price) }}</td>
                         </tr>
                     @endforeach

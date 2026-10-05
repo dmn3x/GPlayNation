@@ -18,7 +18,7 @@ class StoreController extends Controller
         $filters = $request->validated();
 
         $games = Game::published()
-            ->with('tags')
+            ->with(['tags', 'promotions'])
             ->when($filters['q'] ?? null, fn (Builder $query, string $q) => $query->where('name', 'like', "%{$q}%"))
             ->when($filters['genre'] ?? null, fn (Builder $query, string $genre) => $query->where('genre', $genre))
             ->when($filters['tag'] ?? null, fn (Builder $query, string $tag) => $query->whereHas('tags', fn (Builder $tags) => $tags->where('name', $tag)))

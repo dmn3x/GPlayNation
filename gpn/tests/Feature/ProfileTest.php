@@ -9,6 +9,8 @@ use App\Models\Library;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -72,5 +74,19 @@ class ProfileTest extends TestCase
             'password' => 'new-secret-1',
             'password_confirmation' => 'new-secret-1',
         ])->assertSessionHasErrors('current_password');
+    }
+
+    public function test_avatar_upload_stores_on_public_disk(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+        $this->actingAs($user)->put('/profile', [
+            'name' => $user->name,
+            'avatar' => UploadedFile::fake()->image('avatar.jpg'),
+        ])->assertRedirect(route('profile.show'));
+
+        $path = $user->fresh()->avatar_path;
+        $this->assertNotNull($path);
+        Storage::disk('public')->assertExists($path);
     }
 }

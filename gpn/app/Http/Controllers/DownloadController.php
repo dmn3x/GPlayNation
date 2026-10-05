@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\GameStatus;
 use App\Enums\LibrarySource;
 use App\Models\Download;
 use App\Models\Game;
@@ -18,6 +19,10 @@ class DownloadController extends Controller
         $user = auth()->user();
 
         $owned = Library::where('user_id', $user->id)->where('game_id', $game->id)->exists();
+
+        // Owners keep access even if the game later leaves the published state.
+        // Everyone else may only touch published games.
+        abort_unless($owned || $game->status === GameStatus::Published, 404);
 
         if (! $owned && ! $game->isFree()) {
             return redirect()->route('store.show', $game->slug)
