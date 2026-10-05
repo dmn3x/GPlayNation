@@ -127,4 +127,33 @@ class GameManagementTest extends TestCase
         ])->assertRedirect();
         $this->assertSame('BCA', $dev->developer->fresh()->payout_bank);
     }
+
+    public function test_archive_is_forbidden_for_unreviewed_game(): void
+    {
+        $dev = $this->dev();
+        $game = Game::factory()->for($dev->developer)->create(['status' => GameStatus::PendingReview]);
+        $this->actingAs($dev)->post("/dev/games/{$game->id}/archive")->assertForbidden();
+        $this->assertSame(GameStatus::PendingReview, $game->fresh()->status);
+    }
+
+    public function test_trailer_only_change_returns_published_game_to_pending_review(): void
+    {
+        $dev = $this->dev();
+        $game = Game::factory()->for($dev->developer)->published()->create(['trailer_url' => 'https://example.com/old']);
+        $this->actingAs($dev)->put("/dev/games/{$game->id}", [
+            'name' => $game->name, 'description' => $game->description, 'genre' => $game->genre,
+            'price' => $game->price, 'trailer_url' => 'https://example.com/new',
+        ])->assertRedirect();
+        $this->assertSame(GameStatus::PendingReview, $game->fresh()->status);
+    }
+
+    public function test_editing_rejected_game_returns_it_to_pending_review(): void // SRS 3-2.3 resubmit
+    {
+        $dev = $this->dev();
+        $game = Game::factory()->for($dev->developer)->create(['status' => GameStatus::Rejected, 'rejection_feedback' => 'Fix the cover.']);
+        $this->actingAs($dev)->put("/dev/games/{$game->id}", [
+            'name' => 'Fixed Title', 'description' => $game->description, 'genre' => $game->genre, 'price' => $game->price,
+        ])->assertRedirect();
+        $this->assertSame(GameStatus::PendingReview, $game->fresh()->status);
+    }
 }

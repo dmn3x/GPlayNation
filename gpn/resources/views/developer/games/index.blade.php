@@ -48,10 +48,12 @@
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap items-center gap-2">
                                     <a href="{{ route('dev.games.edit', $game) }}" class="btn-ghost px-3 py-1.5 text-sm">Edit</a>
-                                    <form method="POST" action="{{ route('dev.games.archive', $game) }}">
-                                        @csrf
-                                        <button class="btn-ghost px-3 py-1.5 text-sm">{{ $game->status === \App\Enums\GameStatus::Archived ? 'Unarchive' : 'Archive' }}</button>
-                                    </form>
+                                    @if (in_array($game->status, [\App\Enums\GameStatus::Published, \App\Enums\GameStatus::Archived]))
+                                        <form method="POST" action="{{ route('dev.games.archive', $game) }}">
+                                            @csrf
+                                            <button class="btn-ghost px-3 py-1.5 text-sm">{{ $game->status === \App\Enums\GameStatus::Archived ? 'Unarchive' : 'Archive' }}</button>
+                                        </form>
+                                    @endif
                                 </div>
                                 <form method="POST" action="{{ route('dev.iaps.store', $game) }}" class="mt-2 flex flex-wrap items-center gap-2">
                                     @csrf

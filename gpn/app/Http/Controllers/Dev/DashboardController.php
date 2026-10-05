@@ -15,7 +15,6 @@ class DashboardController extends Controller
     {
         $developer = auth()->user()->developer;
         $gameIds = $developer->games()->pluck('id');
-        $month = now()->format('Y-m');
 
         $gross = Transaksi::whereIn('game_id', $gameIds)->where('status', 'success')->sum('total');
         $net = KomisiTransaksi::whereHas('transaksi', fn ($q) => $q->whereIn('game_id', $gameIds))->sum('developer_amount');

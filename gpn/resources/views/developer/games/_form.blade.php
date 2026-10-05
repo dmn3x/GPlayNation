@@ -45,6 +45,15 @@
 
     <div>
         <label for="screenshots" class="mb-1 block text-sm font-medium">Screenshots <span class="text-faint">(up to 5)</span></label>
+        @isset($game)
+            @if ($game->screenshots->isNotEmpty())
+                <div class="mb-2 flex flex-wrap gap-2">
+                    @foreach ($game->screenshots as $shot)
+                        <img src="{{ Storage::url($shot->path) }}" alt="Screenshot" class="h-16 w-28 rounded-lg object-cover">
+                    @endforeach
+                </div>
+            @endif
+        @endisset
         <input type="file" id="screenshots" name="screenshots[]" accept="image/*" multiple class="input">
         @error('screenshots')<p class="field-error">{{ $message }}</p>@enderror
         @error('screenshots.*')<p class="field-error">{{ $message }}</p>@enderror

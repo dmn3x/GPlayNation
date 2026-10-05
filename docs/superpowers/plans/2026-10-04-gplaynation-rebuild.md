@@ -3013,13 +3013,16 @@ public function update(GameUpdateRequest $request, Game $game): RedirectResponse
     $metadataChanged = $game->name !== $data['name']
         || $game->description !== $data['description']
         || $game->genre !== $data['genre']
+        || $game->trailer_url !== ($data['trailer_url'] ?? $game->trailer_url)
         || $request->hasFile('cover') || $request->hasFile('file') || $request->hasFile('screenshots');
 
     DB::transaction(function () use ($request, $game, $data, $metadataChanged) {
         $updates = Arr::only($data, ['name', 'description', 'genre']) + ['price' => $data['price'], 'trailer_url' => $data['trailer_url'] ?? $game->trailer_url];
         if ($request->hasFile('cover')) { $updates['cover_path'] = $request->file('cover')->store('covers', 'public'); }
         if ($request->hasFile('file')) { $updates['file_path'] = $request->file('file')->store('installers', 'public'); }
-        if ($metadataChanged && $game->status === GameStatus::Published) {
+        // Published games go back through moderation on any metadata/file change;
+        // Rejected games resubmit the same way (SRS 3-2.3 "untuk diperbaiki").
+        if ($metadataChanged && in_array($game->status, [GameStatus::Published, GameStatus::Rejected])) {
             $updates['status'] = GameStatus::PendingReview;
         }
         $game->update($updates);
@@ -3037,6 +3040,9 @@ public function update(GameUpdateRequest $request, Game $game): RedirectResponse
 public function archive(Game $game): RedirectResponse // SRS 3.1.2.6
 {
     abort_unless($game->developer_id === auth()->user()->developer->id, 403);
+    // Only games that have PASSED moderation may enter the published↔archived cycle —
+    // otherwise pending_review/rejected games could self-publish in two clicks.
+    abort_unless(in_array($game->status, [GameStatus::Published, GameStatus::Archived]), 403);
     $game->update(['status' => $game->status === GameStatus::Archived ? GameStatus::Published : GameStatus::Archived]);
 
     return back()->with('success', 'Availability updated.');
