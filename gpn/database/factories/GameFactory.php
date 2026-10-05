@@ -25,7 +25,7 @@ class GameFactory extends Factory
             'name' => fake()->unique()->words(3, true),
             'slug' => fn (array $a) => Str::slug($a['name']).'-'.Str::lower(Str::random(4)),
             'description' => fake()->paragraphs(2, true),
-            'price' => fake()->randomElement(['0.00', '25000.00', '75000.00', '150000.00']),
+            'price' => fake()->randomElement(['25000.00', '75000.00', '150000.00']),
             'genre' => fake()->randomElement(Game::GENRES),
             'cover_path' => 'covers/fake.jpg',
             'file_path' => 'installers/fake.zip',

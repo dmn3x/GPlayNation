@@ -43,7 +43,7 @@
                         @if ($inLibrary || $game->isFree())
                             <a href="{{ route('games.download', $game->slug) }}" class="btn-primary"><x-icon name="download" class="h-5 w-5" /> Download</a>
                         @else
-                            {{-- CHECKOUT-BUTTONS --}}
+                            <form method="POST" action="{{ route('checkout.store', ['game', $game->id]) }}">@csrf<button class="btn-primary">Buy now</button></form>
                         @endif
                         @auth
                             <form method="POST" action="{{ route('wishlist.toggle', $game) }}">@csrf
@@ -79,7 +79,7 @@
                             </div>
                             <div class="flex items-center gap-3">
                                 <span class="font-semibold">{{ \App\Support\Money::format($iap->price) }}</span>
-                                {{-- IAP-BUY --}}
+                                <form method="POST" action="{{ route('checkout.store', ['iap', $iap->id]) }}">@csrf<button class="btn-ghost">Buy</button></form>
                             </div>
                         </div>
                     @endforeach

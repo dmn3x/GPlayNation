@@ -12,6 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['role' => \App\Http\Middleware\EnsureRole::class]);
+        $middleware->validateCsrfTokens(except: ['webhooks/payment']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
