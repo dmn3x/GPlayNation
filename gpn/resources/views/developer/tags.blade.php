@@ -7,7 +7,7 @@
         <form method="POST" action="{{ route('dev.tags.store') }}" class="mt-3 flex flex-wrap items-end gap-3">
             @csrf
             <label class="flex flex-col gap-1 text-sm text-subtle">Name
-                <input type="text" name="name" required maxlength="50" placeholder="pixel-art" class="input w-56">
+                <input type="text" name="name" required maxlength="50" placeholder="pixel-art" value="{{ old('name') }}" class="input w-56">
             </label>
             <button class="btn-primary">Create</button>
         </form>

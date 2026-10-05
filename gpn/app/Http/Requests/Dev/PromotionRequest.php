@@ -11,6 +11,14 @@ class PromotionRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'starts_at' => str_replace('T', ' ', (string) $this->input('starts_at')),
+            'ends_at' => str_replace('T', ' ', (string) $this->input('ends_at')),
+        ]);
+    }
+
     /**
      * @return array<string, mixed>
      */

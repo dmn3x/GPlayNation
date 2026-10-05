@@ -40,6 +40,22 @@ class PromotionTest extends TestCase
         ])->assertSessionHasErrors('ends_at');
     }
 
+    public function test_overlapping_promotion_same_day_datetime_local_is_rejected(): void
+    {
+        [$dev, $game] = $this->devWithGame();
+        Promotion::factory()->create([
+            'game_id' => $game->id,
+            'starts_at' => now()->startOfDay()->addHours(8),
+            'ends_at' => now()->startOfDay()->addHours(18),
+        ]);
+        $shape = fn ($dt) => str_replace(' ', 'T', substr($dt, 0, 16));
+        $this->actingAs($dev)->from('/dev/promotion')->post('/dev/promotion', [
+            'game_id' => $game->id, 'discount_percent' => 10,
+            'starts_at' => $shape(now()->startOfDay()->addHours(9)->toDateTimeString()),
+            'ends_at' => $shape(now()->startOfDay()->addHours(20)->toDateTimeString()),
+        ])->assertSessionHasErrors('ends_at');
+    }
+
     public function test_expired_promotion_no_longer_applies(): void
     {
         [$dev, $game] = $this->devWithGame();
@@ -69,6 +85,6 @@ class PromotionTest extends TestCase
         $this->actingAs($dev)->post("/dev/tags/{$tag->id}/detach", ['game_id' => $game->id]);
         $this->assertFalse($game->fresh()->tags->contains($tag));
 
-        $this->get('/store?tag=pixel-art')->assertDontSee($game->name);
+        $this->get('/store?tag=pixel-art')->assertOk()->assertDontSee($game->name);
     }
 }

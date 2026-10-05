@@ -9,18 +9,18 @@
             <label class="flex flex-col gap-1 text-sm text-subtle">Game
                 <select name="game_id" required class="input w-auto">
                     @foreach ($games as $game)
-                        <option value="{{ $game->id }}">{{ $game->name }}</option>
+                        <option value="{{ $game->id }}" @selected((string) old('game_id') === (string) $game->id)>{{ $game->name }}</option>
                     @endforeach
                 </select>
             </label>
             <label class="flex flex-col gap-1 text-sm text-subtle">Discount %
-                <input type="number" name="discount_percent" required min="1" max="90" class="input w-28">
+                <input type="number" name="discount_percent" required min="1" max="90" value="{{ old('discount_percent') }}" class="input w-28">
             </label>
             <label class="flex flex-col gap-1 text-sm text-subtle">Starts at
-                <input type="datetime-local" name="starts_at" required class="input w-auto">
+                <input type="datetime-local" name="starts_at" required value="{{ old('starts_at') }}" class="input w-auto">
             </label>
             <label class="flex flex-col gap-1 text-sm text-subtle">Ends at
-                <input type="datetime-local" name="ends_at" required class="input w-auto">
+                <input type="datetime-local" name="ends_at" required value="{{ old('ends_at') }}" class="input w-auto">
             </label>
             <button class="btn-primary">Create</button>
         </form>
