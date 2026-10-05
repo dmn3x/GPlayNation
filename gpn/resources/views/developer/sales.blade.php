@@ -1,6 +1,6 @@
 <x-portal-layout title="Sales" section="developer">
-    <h1 class="screen-title">Sales</h1>
-    <p class="mt-1 text-subtle">Settled revenue for the selected period.</p>
+    <h1 class="text-2xl font-bold tracking-tight text-white">Sales</h1>
+    <p class="mt-1 text-sm text-white/50">View and manage your sales performance.</p>
 
     <form method="GET" action="{{ route('dev.sales.index') }}" class="mt-6 flex flex-wrap items-end gap-3">
         <label class="flex flex-col gap-1 text-sm text-subtle">Month

@@ -1,6 +1,6 @@
 <x-portal-layout title="Settings" section="developer">
-    <h1 class="screen-title">Studio settings</h1>
-    <p class="mt-1 text-subtle">How players see your studio, and where payouts go.</p>
+    <h1 class="text-2xl font-bold tracking-tight text-white">Settings</h1>
+    <p class="mt-1 text-sm text-white/50">Manage your studio profile and payout details.</p>
 
     <form method="POST" action="{{ route('dev.settings.update') }}" class="card mt-6 max-w-2xl space-y-4 p-6">
         @csrf

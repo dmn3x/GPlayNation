@@ -26,8 +26,9 @@ class DevDashboardTest extends TestCase
 
         $this->actingAs($dev)->get('/dev')
             ->assertOk()
-            ->assertSee('Rp 100.000')   // gross
-            ->assertSee('Rp 80.000')    // net
+            ->assertSee('Active Players')   // downloads proxy
+            ->assertSee('Wishlist Adds')
+            ->assertSee('Published Games')
             ->assertViewHas('series', fn ($s) => count($s) === now()->daysInMonth);
     }
 

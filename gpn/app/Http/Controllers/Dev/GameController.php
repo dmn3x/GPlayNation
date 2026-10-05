@@ -18,7 +18,19 @@ class GameController extends Controller
 {
     public function index(): View
     {
-        return view('developer.games.index', ['games' => auth()->user()->developer->games()->withCount('transaksis')->latest()->get()]);
+        $developer = auth()->user()->developer;
+        $query = $developer->games()->withCount('transaksis')->latest();
+        if (is_string($q = request('q')) && $q !== '') {
+            $query->where('name', 'like', '%'.$q.'%');
+        }
+        $games = $query->get();
+        $stats = [
+            'total' => $developer->games()->count(),
+            'units' => (int) $developer->games()->withCount('transaksis')->get()->sum('transaksis_count'),
+            'revenue' => (float) \App\Models\Transaksi::whereIn('game_id', $developer->games()->pluck('id'))->where('status', 'success')->sum('total'),
+        ];
+
+        return view('developer.games.index', compact('games', 'stats'));
     }
 
     public function create(): View

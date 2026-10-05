@@ -47,6 +47,9 @@
                     <x-icon name="banknote" class="h-4 w-4" /> Riwayat Transaksi
                 </a>
             </nav>
+            <div class="mt-auto pt-6">
+                <a href="{{ route('home') }}" class="flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-white/60 transition hover:bg-white/5 hover:text-white"><x-icon name="chevron-left" class="h-4 w-4" /> Back</a>
+            </div>
         </aside>
 
         <main class="min-w-0 flex-1">

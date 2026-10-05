@@ -44,7 +44,7 @@ class DesignSystemTest extends TestCase
         app('router')->getRoutes()->refreshNameLookups();
 
         $this->blade('<x-portal-layout title="T" section="developer">Body</x-portal-layout>')
-            ->assertSee('Developer Tools')
+            ->assertSee('DEVELOPER TOOLS')
             ->assertSee('Dashboard')
             ->assertSee('Body');
     }

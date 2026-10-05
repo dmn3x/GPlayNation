@@ -1,6 +1,6 @@
 <x-portal-layout title="Payouts" section="developer">
-    <h1 class="screen-title">Payouts</h1>
-    <p class="mt-1 text-subtle">Track what you've earned and what's been paid out.</p>
+    <h1 class="text-2xl font-bold tracking-tight text-white">Payouts</h1>
+    <p class="mt-1 text-sm text-white/50">Track what you have earned and what has been paid out.</p>
 
     <div class="card mt-6 max-w-md p-5">
         <p class="text-sm text-faint">Unpaid balance</p>

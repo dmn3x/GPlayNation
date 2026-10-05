@@ -1,8 +1,13 @@
 <x-portal-layout title="Tags" section="developer">
-    <h1 class="screen-title">Tags</h1>
-    <p class="mt-1 text-subtle">Organize your games with tags players can filter by.</p>
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-white">Tags</h1>
+            <p class="mt-1 text-sm text-white/50">Organize your games with tags players can filter by.</p>
+        </div>
+        <a href="#new-tag" class="flex h-10 items-center rounded-2xl bg-[#1D4ED8] px-4 text-sm font-medium text-white shadow-[0_0_15px_rgba(29,78,216,0.3)] transition hover:brightness-110">Add New Tag</a>
+    </div>
 
-    <div class="card mt-6 p-5">
+    <div id="new-tag" class="card mt-6 scroll-mt-6 p-5">
         <h2 class="section-heading">New tag</h2>
         <form method="POST" action="{{ route('dev.tags.store') }}" class="mt-3 flex flex-wrap items-end gap-3">
             @csrf

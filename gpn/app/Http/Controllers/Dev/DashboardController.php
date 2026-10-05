@@ -32,6 +32,10 @@ class DashboardController extends Controller
             ->map(fn ($day) => ['label' => (string) $day, 'value' => (float) ($daily[now()->format('Y-m-').str_pad((string) $day, 2, '0', STR_PAD_LEFT)] ?? 0)])
             ->all();
 
-        return view('developer.dashboard', compact('gross', 'net', 'sales', 'downloads', 'recent', 'series'));
+        $wishlistAdds = \App\Models\Wishlist::whereIn('game_id', $gameIds)->count();
+        $publishedGames = $developer->games()->where('status', \App\Enums\GameStatus::Published)->latest()->limit(5)->get();
+        $publishedCount = $developer->games()->where('status', \App\Enums\GameStatus::Published)->count();
+
+        return view('developer.dashboard', compact('gross', 'net', 'sales', 'downloads', 'recent', 'series', 'wishlistAdds', 'publishedGames', 'publishedCount'));
     }
 }
