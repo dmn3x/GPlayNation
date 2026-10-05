@@ -25,6 +25,7 @@ cd gpn
 docker run --rm -v "$PWD":/app -w /app composer install
 cp .env.example .env
 docker run --rm -v "$PWD":/app -w /app gpn-php:8.4 php artisan key:generate
+touch database/database.sqlite # sqlite file must exist before migrating
 docker run --rm -v "$PWD":/app -w /app gpn-php:8.4 php artisan migrate --seed
 docker run --rm -v "$PWD":/app -w /app gpn-php:8.4 php artisan storage:link
 npm ci
