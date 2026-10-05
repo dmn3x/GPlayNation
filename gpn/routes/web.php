@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Dev\DashboardController;
+use App\Http\Controllers\Dev\GameController;
+use App\Http\Controllers\Dev\IapController;
+use App\Http\Controllers\Dev\PayoutController;
+use App\Http\Controllers\Dev\SettingController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\GatewayController;
 use App\Http\Controllers\HomeController;
@@ -47,7 +52,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/gateway/{transaksi:order_id}/complete', [GatewayController::class, 'complete'])->name('gateway.complete');
 });
 
-Route::get('/dev', fn () => 'ok')->middleware(['auth', 'role:developer']); // placeholder — Task 8 replaces
+Route::middleware(['auth', 'role:developer'])->prefix('dev')->name('dev.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/games', [GameController::class, 'index'])->name('games.index');
+    Route::get('/games/create', [GameController::class, 'create'])->name('games.create');
+    Route::post('/games', [GameController::class, 'store'])->name('games.store');
+    Route::get('/games/{game}/edit', [GameController::class, 'edit'])->name('games.edit');
+    Route::put('/games/{game}', [GameController::class, 'update'])->name('games.update');
+    Route::post('/games/{game}/archive', [GameController::class, 'archive'])->name('games.archive');
+    Route::post('/games/{game}/iaps', [IapController::class, 'store'])->name('iaps.store');
+    Route::put('/iaps/{iap}', [IapController::class, 'update'])->name('iaps.update');
+    Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('/payouts', [PayoutController::class, 'index'])->name('payouts.index');
+});
 Route::get('/admin', fn () => 'ok')->middleware(['auth', 'role:admin']);    // placeholder — Task 10 replaces
 
 Route::middleware('auth')->group(function () {

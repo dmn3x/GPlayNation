@@ -19,9 +19,11 @@
             <p class="mb-2 px-2 text-xs font-medium uppercase tracking-wide text-faint">{{ $section === 'admin' ? 'Administration' : 'Developer Tools' }}</p>
             <nav class="flex flex-col gap-1">
                 @foreach ($nav as [$route, $label, $icon])
+                    @if (Route::has($route))
                     <a href="{{ route($route) }}" @class(['flex items-center gap-3 rounded-lg px-3 py-2 text-[16.2px] font-medium transition text-subtle hover:bg-accent/10 hover:text-fg', 'bg-accent/10 !text-fg' => request()->routeIs($route)])>
                         <x-icon :name="$icon" class="h-5 w-5" /> {{ $label }}
                     </a>
+                    @endif
                 @endforeach
             </nav>
             <form method="POST" action="{{ route('logout') }}" class="mt-auto">
