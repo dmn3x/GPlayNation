@@ -15,7 +15,7 @@
 <body class="min-h-screen">
     <div class="border-b border-border bg-raised px-4 py-3 md:hidden">
         <div class="mb-2 flex items-center justify-between gap-2">
-            <a href="{{ route('home') }}" class="flex items-center gap-2"><x-logo class="h-7 w-7" /><span class="font-semibold">GPlayNation</span></a>
+            <a href="{{ route('home') }}" class="flex items-center gap-2"><x-logo class="h-7 w-auto" /><span class="font-semibold">GPlayNation</span></a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button aria-label="Log out" class="rounded-lg p-2 text-subtle transition hover:bg-accent/10 hover:text-fg"><x-icon name="logout" class="h-5 w-5" /></button>
@@ -30,13 +30,13 @@
         </nav>
     </div>
     <div class="flex min-h-screen">
-        <aside class="hidden w-[220px] shrink-0 flex-col border-r border-border bg-raised p-4 md:flex">
-            <a href="{{ route('home') }}" class="mb-6 flex items-center gap-2 px-2"><x-logo class="h-8 w-8" /><span class="font-semibold">GPlayNation</span></a>
+        <aside class="hidden w-[208px] shrink-0 flex-col border-r border-border bg-raised p-4 md:flex">
+            <a href="{{ route('home') }}" class="mb-6 flex items-center gap-2 px-2"><x-logo class="h-8 w-auto" /><span class="font-semibold">GPlayNation</span></a>
             <p class="mb-2 px-2 text-xs font-medium uppercase tracking-wide text-faint">{{ $section === 'admin' ? 'Administration' : 'Developer Tools' }}</p>
             <nav class="flex flex-col gap-1">
                 @foreach ($nav as [$route, $label, $icon])
                     @if (Route::has($route))
-                    <a href="{{ route($route) }}" @class(['flex items-center gap-3 rounded-lg px-3 py-2 text-[16.2px] font-medium transition text-subtle hover:bg-accent/10 hover:text-fg', 'bg-accent/10 !text-fg' => request()->routeIs($route)])>
+                    <a href="{{ route($route) }}" @class(['flex h-[38px] items-center gap-3 rounded-lg px-3 py-2 text-[16.2px] font-medium transition text-subtle hover:bg-white/5 hover:text-fg', 'bg-accent/10 !text-fg' => request()->routeIs($route)])>
                         <x-icon :name="$icon" class="h-5 w-5" /> {{ $label }}
                     </a>
                     @endif
