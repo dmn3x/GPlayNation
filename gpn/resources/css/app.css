@@ -55,6 +55,17 @@
 @layer components {
     .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-[16.2px] font-medium text-white transition hover:bg-accent-hi hover:shadow-glow disabled:opacity-40 disabled:pointer-events-none; }
     .btn-ghost { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border-strong bg-elevated px-5 py-2.5 text-[16.2px] font-medium text-fg transition hover:border-accent disabled:opacity-40; }
+    .auth-shell { @apply relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0F0F10]; }
+    .auth-blob { @apply pointer-events-none absolute rounded-full bg-[#1D4ED8]; }
+    .card-auth { @apply border border-[#222224] bg-[#161618] rounded-[17.5px] shadow-[0_27px_27px_rgba(0,0,0,0.25)]; }
+    .card-auth-lg { @apply border-[1.35px] border-[#222224] bg-[#161618] rounded-[21.6px] shadow-[0_34px_68px_rgba(0,0,0,0.25)]; }
+    .input-auth { @apply h-[46px] w-full rounded-[17.5px] border border-[#222224] bg-[#0F0F10] pr-[18.6px] pl-[40.5px] text-[15.31px] text-white placeholder:text-white/30 focus:border-[#1D4ED8] focus:outline-none; }
+    .input-auth-lg { @apply h-[56.7px] rounded-[21.6px] px-[48.6px] text-[18.9px]; }
+    .btn-auth { @apply h-[44px] w-full rounded-[17.5px] bg-[#1D4ED8] text-[15.31px] font-medium text-white shadow-[0_4px_3px_rgba(29,78,216,0.2),0_11px_8px_rgba(29,78,216,0.2)] transition hover:brightness-110 hover:shadow-[0_0_36px_rgba(29,78,216,0.55)]; }
+    .social-btn { @apply flex h-[46px] items-center justify-center gap-[8.75px] rounded-[17.5px] border border-[#222224] bg-[#0F0F10] text-[15.31px] font-medium text-white transition hover:border-[#303034]; }
+    .nav-glass-active { @apply rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md; }
+    .table-admin th { @apply h-[33px] text-[10px] font-medium tracking-wide text-white/50 uppercase; }
+    .table-admin td { @apply border-t border-[#222224] text-xs; }
     .input { @apply w-full rounded-input border border-border bg-elevated px-4 py-2.5 text-[16.2px] text-fg placeholder:text-subtle focus:border-accent focus:outline-none; }
     .card { @apply rounded-2xl border border-border-strong bg-raised shadow-card; }
     .nav-pill { @apply rounded-full px-4 py-2 text-[16.2px] font-medium text-subtle transition hover:bg-accent/10 hover:text-fg; }
