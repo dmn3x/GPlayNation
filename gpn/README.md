@@ -41,18 +41,18 @@ Then open http://localhost:8000.
 
 ## Demo accounts
 
-`php artisan migrate --seed` creates one user:
+`php artisan migrate --seed` creates a full demo world (users, 12 published games
+with covers + installers, transactions, community posts). All passwords are `password`:
 
-| Email            | Password   | Role |
-|------------------|------------|------|
-| test@example.com | `password` | user |
-
-More roles for trying the portals:
-
-- **Developer** — register at `/register` with account type "developer"; the studio stays
-  pending until an admin verifies it (`/admin/verification`).
-- **Admin** — create one via tinker:
-  `User::factory()->admin()->create(['email' => 'admin@example.com'])` (password `password`).
+| Email                    | Password   | Role                       |
+|--------------------------|------------|----------------------------|
+| admin@gplaynation.test   | `password` | admin                      |
+| dev@gplaynation.test     | `password` | developer, verified (Studio Nusantara) |
+| dev2@gplaynation.test    | `password` | developer, verified (Arus Digital)     |
+| pending@gplaynation.test | `password` | developer, pending verification        |
+| user@gplaynation.test    | `password` | user                       |
+| user2@gplaynation.test   | `password` | user                       |
+| user3@gplaynation.test   | `password` | user                       |
 
 ## Tests
 
