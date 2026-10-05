@@ -11,14 +11,6 @@ class PromotionRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'starts_at' => str_replace('T', ' ', (string) $this->input('starts_at')),
-            'ends_at' => str_replace('T', ' ', (string) $this->input('ends_at')),
-        ]);
-    }
-
     /**
      * @return array<string, mixed>
      */
@@ -30,8 +22,8 @@ class PromotionRequest extends FormRequest
             'starts_at' => ['required', 'date'],
             'ends_at' => ['required', 'date', 'after:starts_at', function ($attribute, $value, $fail) {
                 $overlap = \App\Models\Promotion::where('game_id', $this->input('game_id'))
-                    ->where('ends_at', '>', $this->input('starts_at'))
-                    ->where('starts_at', '<', $value)
+                    ->where('ends_at', '>', \Illuminate\Support\Carbon::parse($this->input('starts_at')))
+                    ->where('starts_at', '<', \Illuminate\Support\Carbon::parse($value))
                     ->exists();
                 if ($overlap) {
                     $fail('This game already has a promotion in that period.');

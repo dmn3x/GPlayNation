@@ -56,6 +56,24 @@ class PromotionTest extends TestCase
         ])->assertSessionHasErrors('ends_at');
     }
 
+    public function test_back_to_back_promotions_are_allowed(): void
+    {
+        [$dev, $game] = $this->devWithGame();
+        Promotion::factory()->create([
+            'game_id' => $game->id,
+            'starts_at' => now()->startOfDay()->addHours(8),
+            'ends_at' => now()->startOfDay()->addHours(18),
+        ]);
+        $shape = fn ($dt) => str_replace(' ', 'T', substr($dt, 0, 16));
+        $this->actingAs($dev)->from('/dev/promotion')->post('/dev/promotion', [
+            'game_id' => $game->id, 'discount_percent' => 10,
+            'starts_at' => $shape(now()->startOfDay()->addHours(18)->toDateTimeString()),
+            'ends_at' => $shape(now()->startOfDay()->addHours(20)->toDateTimeString()),
+        ])->assertSessionHasNoErrors()->assertRedirect(route('dev.promotion.index'));
+
+        $this->assertSame(2, Promotion::where('game_id', $game->id)->count());
+    }
+
     public function test_expired_promotion_no_longer_applies(): void
     {
         [$dev, $game] = $this->devWithGame();
