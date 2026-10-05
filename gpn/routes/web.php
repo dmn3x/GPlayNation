@@ -16,9 +16,11 @@ use App\Http\Controllers\Admin\ModerationController as AdminModerationController
 use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\VerificationController as AdminVerificationController;
+use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\GatewayController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\VoteController;
 use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
@@ -30,7 +32,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 Route::get('/store/{game:slug}', [StoreController::class, 'show'])->name('store.show');
 
-Route::get('/community', fn () => 'ok')->name('community.index'); // placeholder — Task 11 replaces
+Route::get('/community', [CommunityController::class, 'index'])->name('community.index');
 
 Route::post('/webhooks/payment', [PaymentWebhookController::class, 'handle'])->name('webhooks.payment');
 
@@ -99,6 +101,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 Route::middleware('auth')->group(function () {
+    Route::post('/community/posts', [CommunityController::class, 'store'])->name('community.posts.store');
+    Route::post('/posts/{post}/vote', [VoteController::class, 'store'])->name('posts.vote');
     Route::post('/wishlist/{game}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::get('/games/{game:slug}/download', [DownloadController::class, 'show'])->name('games.download');
 });
