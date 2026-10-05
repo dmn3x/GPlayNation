@@ -60,8 +60,8 @@
             @else
                 <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
                     @foreach ($user->libraries as $library)
-                        <a href="{{ route('store.show', $library->game->slug) }}" class="relative block h-[410px] overflow-hidden rounded-2xl border border-[#222224] bg-[#161618]">
-                            <img src="{{ asset('storage/'.$library->game->cover_path) }}" alt="{{ $library->game->name }} cover" class="absolute inset-0 h-full w-full object-cover opacity-70">
+                        <a href="{{ route('store.show', $library->game->slug) }}" class="group relative block h-[410px] overflow-hidden rounded-2xl border border-[#222224] bg-[#161618] transition hover:border-[#303034]">
+                            <img src="{{ asset('storage/'.$library->game->cover_path) }}" alt="{{ $library->game->name }} cover" class="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-300 group-hover:scale-[1.02]">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#0F0F10] via-transparent to-transparent"></div>
                             <div class="absolute inset-x-4 bottom-4">
                                 <h3 class="text-[14px] font-semibold text-white">{{ $library->game->name }}</h3>

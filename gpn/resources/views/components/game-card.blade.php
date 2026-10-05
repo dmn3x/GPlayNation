@@ -1,5 +1,5 @@
 @props(['game'])
-<a href="{{ route('store.show', $game->slug) }}" class="card group block overflow-hidden transition hover:border-accent">
+<a href="{{ route('store.show', $game->slug) }}" class="card group block overflow-hidden transition hover:border-[#303034]">
     <div class="aspect-video overflow-hidden bg-elevated">
         <img src="{{ asset('storage/'.$game->cover_path) }}" alt="{{ $game->name }} cover" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]">
     </div>
