@@ -43,7 +43,7 @@
                 <div class="space-y-3">
                     <form method="POST" action="{{ route('gateway.complete', $trx->order_id) }}" data-gateway-form>
                         @csrf
-                        <input type="hidden" name="method" value="">
+                        <input type="hidden" name="method" value="e_wallet">
                         <input type="hidden" name="outcome" value="settlement">
                         <button type="submit" class="btn-primary w-full !bg-success hover:!bg-success/90">
                             <x-icon name="check" class="h-5 w-5" /> Pay (success)
@@ -52,7 +52,7 @@
 
                     <form method="POST" action="{{ route('gateway.complete', $trx->order_id) }}" data-gateway-form>
                         @csrf
-                        <input type="hidden" name="method" value="">
+                        <input type="hidden" name="method" value="e_wallet">
                         <input type="hidden" name="outcome" value="deny">
                         <button type="submit" class="btn-ghost w-full !border-danger !text-danger hover:!border-danger">
                             <x-icon name="x" class="h-5 w-5" /> Fail
@@ -61,7 +61,7 @@
 
                     <form method="POST" action="{{ route('gateway.complete', $trx->order_id) }}" data-gateway-form>
                         @csrf
-                        <input type="hidden" name="method" value="">
+                        <input type="hidden" name="method" value="e_wallet">
                         <input type="hidden" name="outcome" value="expire">
                         <button type="submit" class="btn-ghost w-full">
                             <x-icon name="alert" class="h-5 w-5" /> Expire

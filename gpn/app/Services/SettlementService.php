@@ -56,8 +56,7 @@ class SettlementService
     private function settle(Transaksi $trx, array $payload): Transaksi
     {
         return DB::transaction(function () use ($trx, $payload) {
-            $trx->lockForUpdate();
-            $trx->refresh();
+            $trx = Transaksi::whereKey($trx->getKey())->lockForUpdate()->first();
             if ($trx->isFinal()) {
                 return $trx;
             }
@@ -92,8 +91,10 @@ class SettlementService
 
     private function mark(Transaksi $trx, TransaksiStatus $status): Transaksi
     {
-        $trx->update(['status' => $status]);
+        Transaksi::whereKey($trx->getKey())
+            ->where('status', TransaksiStatus::Pending->value)
+            ->update(['status' => $status->value]);
 
-        return $trx;
+        return $trx->refresh();
     }
 }

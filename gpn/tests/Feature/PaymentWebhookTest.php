@@ -21,7 +21,7 @@ class PaymentWebhookTest extends TestCase
             'transaction_status' => $status,
             'gross_amount' => $gross,
             'payment_type' => 'e_wallet',
-            'signature_key' => Signature::make($trx->order_id, '200', $gross, config('services.gpn_payment.server_key')),
+            'signature_key' => Signature::make($trx->order_id, '200', $gross, (string) config('services.gpn_payment.server_key')),
         ];
     }
 
@@ -80,7 +80,7 @@ class PaymentWebhookTest extends TestCase
         $payload = $this->signedPayload($trx);
         $this->postJson('/webhooks/payment', $payload)->assertOk();
         $payload['payment_type'] = 'credit_card'; // a second, different delivery
-        $payload['signature_key'] = Signature::make($trx->order_id, '200', $payload['gross_amount'], config('services.gpn_payment.server_key'));
+        $payload['signature_key'] = Signature::make($trx->order_id, '200', $payload['gross_amount'], (string) config('services.gpn_payment.server_key'));
         $this->postJson('/webhooks/payment', $payload)->assertOk();
         $this->assertSame(1, Library::count());
         $this->assertSame(1, KomisiTransaksi::count());
@@ -102,11 +102,31 @@ class PaymentWebhookTest extends TestCase
         $this->assertSame(TransaksiStatus::Expired, $expired->fresh()->status);
     }
 
+    public function test_capture_settles_like_settlement(): void
+    {
+        $trx = Transaksi::factory()->create(['total' => '100000.00']);
+
+        $this->postJson('/webhooks/payment', $this->signedPayload($trx, 'capture'))->assertOk();
+
+        $trx->refresh();
+        $this->assertSame(TransaksiStatus::Success, $trx->status);
+        $this->assertDatabaseHas('pembayarans', ['transaksi_id' => $trx->id, 'method' => 'e_wallet']);
+        $this->assertDatabaseHas('libraries', ['user_id' => $trx->user_id, 'game_id' => $trx->game_id, 'source' => LibrarySource::Purchase->value]);
+        $this->assertSame(1, KomisiTransaksi::where('transaksi_id', $trx->id)->count());
+    }
+
+    public function test_cancel_maps_to_failed(): void
+    {
+        $trx = Transaksi::factory()->create();
+        $this->postJson('/webhooks/payment', $this->signedPayload($trx, 'cancel'))->assertOk();
+        $this->assertSame(TransaksiStatus::Failed, $trx->fresh()->status);
+    }
+
     public function test_unknown_order_is_404(): void
     {
         $payload = $this->signedPayload(Transaksi::factory()->create());
         $payload['order_id'] = 'GPN-20990101-XXXXXX';
-        $payload['signature_key'] = Signature::make($payload['order_id'], '200', $payload['gross_amount'], config('services.gpn_payment.server_key'));
+        $payload['signature_key'] = Signature::make($payload['order_id'], '200', $payload['gross_amount'], (string) config('services.gpn_payment.server_key'));
         $this->postJson('/webhooks/payment', $payload)->assertNotFound();
     }
 

@@ -9,7 +9,7 @@ class Signature
         return number_format((float) $total, 2, '.', '');
     }
 
-    public static function make(string $orderId, string $statusCode, string $grossAmount, ?string $key): string
+    public static function make(string $orderId, string $statusCode, string $grossAmount, string $key): string
     {
         return hash('sha512', $orderId . $statusCode . $grossAmount . $key);
     }
