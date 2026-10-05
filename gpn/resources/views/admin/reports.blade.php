@@ -25,22 +25,22 @@
             @else
                 <table class="w-full text-left text-[15px]">
                     <thead>
-                        <tr class="border-b border-border text-sm text-faint">
-                            <th class="px-4 py-3 font-medium">Studio</th>
-                            <th class="px-4 py-3 font-medium">Transactions</th>
-                            <th class="px-4 py-3 font-medium">Gross</th>
-                            <th class="px-4 py-3 font-medium">Commission</th>
-                            <th class="px-4 py-3 font-medium">Net</th>
+                        <tr class="h-[33px] border-b border-[#222224] text-[11px] font-medium uppercase text-white/50">
+                            <th class="px-4 font-medium">Studio</th>
+                            <th class="px-4 font-medium">Transactions</th>
+                            <th class="px-4 font-medium">Gross</th>
+                            <th class="px-4 font-medium">Commission</th>
+                            <th class="px-4 font-medium">Net</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($commission as $studio => $row)
-                            <tr class="border-b border-border last:border-0">
-                                <td class="px-4 py-3 font-medium">{{ $studio }}</td>
-                                <td class="px-4 py-3">{{ number_format($row['count']) }}</td>
-                                <td class="px-4 py-3">{{ \App\Support\Money::format($row['gross']) }}</td>
-                                <td class="px-4 py-3">{{ \App\Support\Money::format($row['commission']) }}</td>
-                                <td class="px-4 py-3">{{ \App\Support\Money::format($row['net']) }}</td>
+                            <tr class="h-[59px] border-b border-[#222224] last:border-0">
+                                <td class="px-4 font-medium">{{ $studio }}</td>
+                                <td class="px-4">{{ number_format($row['count']) }}</td>
+                                <td class="px-4">{{ \App\Support\Money::format($row['gross']) }}</td>
+                                <td class="px-4">{{ \App\Support\Money::format($row['commission']) }}</td>
+                                <td class="px-4">{{ \App\Support\Money::format($row['net']) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -72,31 +72,31 @@
             @else
                 <table class="w-full text-left text-[15px]">
                     <thead>
-                        <tr class="border-b border-border text-sm text-faint">
-                            <th class="px-4 py-3 font-medium">Order</th>
-                            <th class="px-4 py-3 font-medium">Buyer</th>
-                            <th class="px-4 py-3 font-medium">Game</th>
-                            <th class="px-4 py-3 font-medium">Status</th>
-                            <th class="px-4 py-3 font-medium">Settled</th>
-                            <th class="px-4 py-3 font-medium">Total</th>
+                        <tr class="h-[33px] border-b border-[#222224] text-[11px] font-medium uppercase text-white/50">
+                            <th class="px-4 font-medium">Order</th>
+                            <th class="px-4 font-medium">Buyer</th>
+                            <th class="px-4 font-medium">Game</th>
+                            <th class="px-4 font-medium">Status</th>
+                            <th class="px-4 font-medium">Settled</th>
+                            <th class="px-4 font-medium">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($transactions as $trx)
-                            <tr class="border-b border-border last:border-0">
-                                <td class="px-4 py-3">{{ $trx->order_id }}</td>
-                                <td class="px-4 py-3">{{ $trx->user?->name ?? '—' }}</td>
-                                <td class="px-4 py-3">{{ $trx->game?->name ?? '—' }}</td>
-                                <td class="px-4 py-3">{{ $trx->status->value }}</td>
-                                <td class="px-4 py-3 text-subtle">{{ $trx->pembayaran?->paid_at?->format('d M Y H:i') ?? '—' }}</td>
-                                <td class="px-4 py-3">{{ \App\Support\Money::format($trx->total) }}</td>
+                            <tr class="h-[59px] border-b border-[#222224] last:border-0">
+                                <td class="px-4">{{ $trx->order_id }}</td>
+                                <td class="px-4">{{ $trx->user?->name ?? '—' }}</td>
+                                <td class="px-4">{{ $trx->game?->name ?? '—' }}</td>
+                                <td class="px-4"><x-status-pill :status="$trx->status" /></td>
+                                <td class="px-4 text-subtle">{{ $trx->pembayaran?->paid_at?->format('d M Y H:i') ?? '—' }}</td>
+                                <td class="px-4">{{ \App\Support\Money::format($trx->total) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="border-t border-border font-medium">
                             <td colspan="5" class="px-4 py-3 text-right text-subtle">Total</td>
-                            <td class="px-4 py-3">{{ \App\Support\Money::format($total) }}</td>
+                            <td class="px-4">{{ \App\Support\Money::format($total) }}</td>
                         </tr>
                     </tfoot>
                 </table>

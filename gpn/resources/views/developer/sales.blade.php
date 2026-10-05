@@ -52,7 +52,7 @@
         @else
             <table class="w-full text-left text-[15px]">
                 <thead>
-                    <tr class="border-b border-border text-sm text-faint">
+                    <tr class="border-b border-[#222224] text-[11px] font-medium uppercase text-white/50">
                         <th class="px-4 py-3 font-medium">Date</th>
                         <th class="px-4 py-3 font-medium">Order</th>
                         <th class="px-4 py-3 font-medium">Buyer</th>

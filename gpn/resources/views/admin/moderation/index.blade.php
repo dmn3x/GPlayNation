@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
                     @foreach ($games as $game)
-                        <tr class="border-t border-[#222224]">
+                        <tr class="h-[89px] border-t border-[#222224]">
                             <td class="py-4 pr-4">
                                 <span class="flex items-center gap-3">
                                     @if ($game->cover_path)

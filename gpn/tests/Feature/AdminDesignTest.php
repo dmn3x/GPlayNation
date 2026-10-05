@@ -28,6 +28,7 @@ class AdminDesignTest extends TestCase
             ->assertSee('Ananta Review', false)
             ->assertSee('Tinjau Game', false)
             ->assertSee('Menunggu', false)
+            ->assertSee('h-[89px]', false)
             ->assertDontSee('h-[48px]', false);
     }
 
@@ -39,5 +40,9 @@ class AdminDesignTest extends TestCase
             ->assertSee('Pending developers', false);
         $this->actingAs($this->admin())->get('/admin/moderation')
             ->assertOk();
+        \App\Models\Transaksi::factory()->success()->create();
+        $this->actingAs($this->admin())->get('/admin/reports')
+            ->assertOk()
+            ->assertSee('h-[59px]', false);
     }
 }

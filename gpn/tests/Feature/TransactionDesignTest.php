@@ -26,6 +26,8 @@ class TransactionDesignTest extends TestCase
             ->assertSee('PRODUK', false)
             ->assertSee('STATUS', false)
             ->assertSee('Detail', false)
+            ->assertSee('h-[71px]', false)
+            ->assertSee('Rp 75.000', false)
             ->assertDontSee('h-[48px]', false);
     }
 

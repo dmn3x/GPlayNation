@@ -18,6 +18,7 @@ class AuthDesignTest extends TestCase
         $r->assertSee('Google', false);
         $r->assertSee('Apple', false);
         $r->assertSee('Already have an account?', false);
+        $r->assertDontSee('w-[518px]', false);
         $r->assertDontSee('h-[48px]', false);
     }
 
@@ -31,6 +32,7 @@ class AuthDesignTest extends TestCase
         $r->assertSee('btn-auth-lg', false);
         $r->assertSee('or continue with', false);
         $r->assertSee('Sign Up', false);
+        $r->assertDontSee('w-[420px]', false);
         $r->assertDontSee('h-[48px]', false);
     }
 }
