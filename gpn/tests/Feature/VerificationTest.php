@@ -18,6 +18,7 @@ class VerificationTest extends TestCase
 
         $this->actingAs($admin)->post("/admin/verification/{$dev->id}", ['action' => 'approve'])->assertRedirect();
         $this->assertSame(UserStatus::Active, $dev->fresh()->status);
+        auth()->logout();
         $this->post('/login', ['email' => $dev->email, 'password' => 'password'])->assertRedirect('/dev');
     }
 
@@ -50,5 +51,15 @@ class VerificationTest extends TestCase
         $dev = User::factory()->developer()->create();
         $target = User::factory()->developer()->create();
         $this->actingAs($dev)->post("/admin/verification/{$target->id}", ['action' => 'approve'])->assertForbidden();
+    }
+
+    public function test_admin_dashboard_renders(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)->get('/admin')
+            ->assertOk()
+            ->assertSee('Pending developers')
+            ->assertSee('Commission this month');
     }
 }

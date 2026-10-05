@@ -52,4 +52,14 @@ class ModerationTest extends TestCase
         $this->assertSame(GameStatus::PendingReview, $game->fresh()->status);
         $this->actingAs($admin)->get('/admin/moderation')->assertSee($game->fresh()->name);
     }
+
+    public function test_moderation_detail_renders(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $game = Game::factory()->create(['status' => GameStatus::PendingReview, 'name' => 'Detail Render Check']);
+
+        $this->actingAs($admin)->get("/admin/moderation/{$game->id}")
+            ->assertOk()
+            ->assertSee('Detail Render Check');
+    }
 }

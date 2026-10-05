@@ -69,4 +69,13 @@ class CommissionPayoutTest extends TestCase
             ->assertSee($dev->developer->studio_name)
             ->assertSee('Rp 64.000');
     }
+
+    public function test_commission_page_renders(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)->get('/admin/commission')
+            ->assertOk()
+            ->assertSee('Current rate');
+    }
 }

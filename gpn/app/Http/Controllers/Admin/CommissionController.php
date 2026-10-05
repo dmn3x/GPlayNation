@@ -15,7 +15,7 @@ class CommissionController extends Controller
     {
         return view('admin.commission', [
             'currentRate' => $commissions->percentageFor(now()),
-            'schedule' => Komisi::latest('effective_from')->latest('id')->paginate(20),
+            'schedule' => Komisi::latest('effective_from')->latest('id')->paginate(20)->withQueryString(),
         ]);
     }
 
