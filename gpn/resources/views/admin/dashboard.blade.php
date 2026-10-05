@@ -1,6 +1,8 @@
 <x-portal-layout title="Admin Dashboard" section="admin">
-    <h1 class="screen-title">Dashboard</h1>
-    <p class="mt-1 text-subtle">Platform overview at a glance.</p>
+    <div class="pb-8">
+        <h1 class="text-2xl font-bold tracking-tight text-white">Dashboard</h1>
+        <p class="mt-1 text-sm text-white/50">Platform overview at a glance.</p>
+    </div>
 
     <div class="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-5">
         <a href="{{ route('admin.verification.index') }}" class="card p-5 transition hover:border-accent">

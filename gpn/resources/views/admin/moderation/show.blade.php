@@ -1,7 +1,7 @@
 <x-portal-layout title="Review {{ $game->name }}" section="admin">
-    <a href="{{ route('admin.moderation.index') }}" class="text-sm text-subtle hover:text-fg">&larr; Back to queue</a>
-    <h1 class="screen-title mt-2">{{ $game->name }}</h1>
-    <p class="mt-1 text-subtle">by {{ $game->developer?->studio_name ?? '—' }} · {{ $game->genre }} · {{ \App\Support\Money::format($game->price) }}</p>
+    <a href="{{ route('admin.moderation.index') }}" class="inline-flex items-center gap-1 text-sm text-white/60 transition hover:text-white"><x-icon name="chevron-left" class="h-4 w-4" /> Back to queue</a>
+    <h1 class="mt-2 text-2xl font-bold tracking-tight text-white">{{ $game->name }}</h1>
+    <p class="mt-1 text-sm text-white/50">by {{ $game->developer?->studio_name ?? '—' }} · {{ $game->genre }} · {{ \App\Support\Money::format($game->price) }}</p>
 
     @if ($game->cover_path)
         <img src="{{ Storage::url($game->cover_path) }}" alt="" class="card mt-6 max-h-72 w-auto object-cover">
@@ -54,11 +54,11 @@
         </div>
     @endif
 
-    <div class="card mt-6 flex flex-wrap items-start gap-3 p-5">
+    <div class="card mt-6 flex flex-wrap items-end justify-end gap-2 p-5">
         <form method="POST" action="{{ route('admin.moderation.update', $game) }}">
             @csrf
             <input type="hidden" name="action" value="approve">
-            <button class="btn-primary">Approve &amp; publish</button>
+            <button class="flex h-10 items-center rounded-2xl bg-[#1D4ED8] px-5 text-sm font-medium text-white shadow-lg shadow-blue-800/40 transition hover:brightness-110">Setujui Game</button>
         </form>
         <form method="POST" action="{{ route('admin.moderation.update', $game) }}" class="flex flex-col gap-2">
             @csrf
@@ -67,7 +67,7 @@
                 <textarea name="feedback" rows="3" required maxlength="1000" placeholder="What must the developer fix?" class="input w-96">{{ old('feedback') }}</textarea>
             </label>
             @error('feedback')<p class="text-sm text-danger">{{ $message }}</p>@enderror
-            <button class="btn-ghost w-fit px-4 py-2 text-sm text-danger">Reject with feedback</button>
+            <button class="flex h-8 w-fit items-center rounded-xl border border-[#222224] px-3 text-xs font-medium text-[#FF6467] transition hover:bg-white/5">Tolak Game</button>
         </form>
     </div>
 </x-portal-layout>

@@ -14,12 +14,34 @@ class ModerationController extends Controller
 {
     public function index(): View // SRS 3.1.4.1
     {
+        $tab = request('tab', 'semua');
+        $tabStatuses = [
+            'menunggu' => [GameStatus::PendingReview],
+            'disetujui' => [GameStatus::Published],
+            'ditolak' => [GameStatus::Rejected],
+        ];
+        $query = Game::with('developer')->latest();
+        if (isset($tabStatuses[$tab])) {
+            $query->whereIn('status', $tabStatuses[$tab]);
+        } else {
+            $tab = 'semua';
+            $query->whereIn('status', [GameStatus::PendingReview, GameStatus::Published, GameStatus::Rejected]);
+        }
+        if (is_string($q = request('q')) && $q !== '') {
+            $query->where(function ($w) use ($q) {
+                $w->where('name', 'like', '%'.$q.'%')
+                    ->orWhereHas('developer', fn ($d) => $d->where('studio_name', 'like', '%'.$q.'%'));
+            });
+        }
+
         return view('admin.moderation.index', [
-            'games' => Game::where('status', GameStatus::PendingReview)
-                ->with('developer')
-                ->oldest()
-                ->paginate(20)
-                ->withQueryString(),
+            'games' => $query->paginate(20)->withQueryString(),
+            'tab' => $tab,
+            'stats' => [
+                'menunggu' => Game::where('status', GameStatus::PendingReview)->count(),
+                'disetujui' => Game::where('status', GameStatus::Published)->count(),
+                'ditolak' => Game::where('status', GameStatus::Rejected)->count(),
+            ],
         ]);
     }
 

@@ -1,6 +1,8 @@
 <x-portal-layout title="Reports" section="admin">
-    <h1 class="screen-title">Reports</h1>
-    <p class="mt-1 text-subtle">Platform-wide transaction and commission reports.</p>
+    <div class="pb-8">
+        <h1 class="text-2xl font-bold tracking-tight text-white">Laporan Transaksi Admin</h1>
+        <p class="mt-1 text-sm text-white/50">Pantau dan kelola seluruh transaksi platform.</p>
+    </div>
 
     <div class="mt-6 flex gap-2">
         <a href="{{ route('admin.reports.index', array_filter(['tab' => 'transactions', 'month' => $month, 'status' => $status])) }}" @class(['btn-ghost px-4 py-2 text-sm', 'btn-primary' => $tab !== 'commission'])>Transactions</a>

@@ -19,6 +19,8 @@ class ModerationTest extends TestCase
         Game::factory()->published()->create(['name' => 'Already Live']);
 
         $this->actingAs($admin)->get('/admin/moderation')
+            ->assertSee('Sundel Bolong')->assertSee('Already Live');
+        $this->actingAs($admin)->get('/admin/moderation?tab=menunggu')
             ->assertSee('Sundel Bolong')->assertDontSee('Already Live');
 
         $this->actingAs($admin)->post("/admin/moderation/{$pending->id}", ['action' => 'approve']);

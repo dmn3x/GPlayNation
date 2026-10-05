@@ -1,6 +1,8 @@
 <x-portal-layout title="Verification" section="admin">
-    <h1 class="screen-title">Developer verification</h1>
-    <p class="mt-1 text-subtle">Approve or reject developer registrations.</p>
+    <div class="pb-8">
+        <h1 class="text-2xl font-bold tracking-tight text-white">Verifikasi Developer</h1>
+        <p class="mt-1 text-sm text-white/50">Setujui atau tolak pendaftaran developer.</p>
+    </div>
 
     <div class="mt-6 flex gap-2">
         <a href="{{ route('admin.verification.index', ['tab' => 'pending']) }}" @class(['btn-ghost px-4 py-2 text-sm', 'btn-primary' => $tab !== 'rejected'])>Pending</a>

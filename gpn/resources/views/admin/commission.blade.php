@@ -1,13 +1,18 @@
 <x-portal-layout title="Commission" section="admin">
-    <h1 class="screen-title">Commission</h1>
-    <p class="mt-1 text-subtle">Platform cut applied to settled transactions. Schedule changes take effect on their date.</p>
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-8">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-white">Kelola Skema Komisi</h1>
+            <p class="mt-1 text-sm text-white/50">Atur pembagian komisi platform dan developer.</p>
+        </div>
+        <a href="#schedule-rate" class="flex h-10 items-center rounded-2xl bg-[#1D4ED8] px-4 text-sm font-medium text-white shadow-lg shadow-blue-800/40 transition hover:brightness-110">Tambah Skema</a>
+    </div>
 
     <div class="card mt-6 max-w-md p-5">
         <p class="text-sm text-faint">Current rate</p>
         <p class="mt-1 text-4xl font-semibold">{{ number_format((float) $currentRate, 2) }}%</p>
     </div>
 
-    <h2 class="section-heading mt-6">Schedule new rate</h2>
+    <h2 id="schedule-rate" class="section-heading mt-6 scroll-mt-6">Schedule new rate</h2>
     <form method="POST" action="{{ route('admin.commission.store') }}" class="card mt-3 flex max-w-2xl flex-wrap items-end gap-3 p-5">
         @csrf
         <label class="flex flex-col gap-1 text-sm text-subtle">Percentage (%)

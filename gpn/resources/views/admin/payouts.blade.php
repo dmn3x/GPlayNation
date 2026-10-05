@@ -1,6 +1,8 @@
 <x-portal-layout title="Payouts" section="admin">
-    <h1 class="screen-title">Payouts</h1>
-    <p class="mt-1 text-subtle">Process developer earnings from settled transactions.</p>
+    <div class="pb-8">
+        <h1 class="text-2xl font-bold tracking-tight text-white">Payout Komisi</h1>
+        <p class="mt-1 text-sm text-white/50">Kelola pembayaran komisi untuk developer.</p>
+    </div>
 
     <h2 class="section-heading mt-6">Unpaid balances</h2>
     <div class="card mt-3 overflow-hidden">
