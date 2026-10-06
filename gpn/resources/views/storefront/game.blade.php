@@ -7,8 +7,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-bg text-fg font-sans antialiased">
-    <div class="flex">
-        <aside class="sticky top-0 flex h-screen w-[192px] shrink-0 flex-col border-r border-[#222224] bg-bg p-4">
+    <div class="flex flex-col lg:flex-row">
+        <aside class="hidden w-[192px] shrink-0 flex-col border-r border-[#222224] bg-bg p-4 lg:sticky lg:top-0 lg:flex lg:h-screen">
             <a href="{{ route('home') }}" class="mb-6 flex items-center p-2" aria-label="GPlayNation home">
                 <x-logo class="h-7 w-auto" />
             </a>
@@ -35,12 +35,18 @@
         </aside>
 
         <main class="min-w-0 flex-1">
-            <section class="relative h-[256px] overflow-hidden">
+            <div class="flex items-center gap-3 overflow-x-auto border-b border-[#222224] p-3 lg:hidden">
+                <a href="{{ route('home') }}" class="whitespace-nowrap rounded-lg px-3 py-2 text-sm text-white/60 hover:bg-white/5 hover:text-white">Home</a>
+                <a href="{{ route('store.index') }}" class="whitespace-nowrap rounded-lg px-3 py-2 text-sm text-white/60 hover:bg-white/5 hover:text-white">Categories</a>
+                <a href="{{ route('store.index', ['sort' => 'price_asc']) }}" class="whitespace-nowrap rounded-lg px-3 py-2 text-sm text-white/60 hover:bg-white/5 hover:text-white">Price</a>
+                <a href="{{ route('store.index', ['sort' => 'newest']) }}" class="whitespace-nowrap rounded-lg px-3 py-2 text-sm text-white/60 hover:bg-white/5 hover:text-white">New Releases</a>
+            </div>
+            <section class="relative h-[220px] overflow-hidden sm:h-[256px]">
                 <img src="{{ asset('storage/'.$game->cover_path) }}" alt="{{ $game->name }} banner" class="absolute inset-0 h-full w-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F0F10] via-[#0F0F10]/50 to-transparent"></div>
-                <div class="absolute bottom-8 left-8">
-                    <h1 class="text-[32px] font-bold leading-[40px] text-white">{{ $game->name }}</h1>
-                    <div class="mt-2 flex items-center gap-4 text-[14px] text-white/70">
+                <div class="absolute bottom-4 left-4 right-4 sm:bottom-8 sm:left-8 sm:right-auto">
+                    <h1 class="text-[24px] font-bold leading-[30px] text-white sm:text-[32px] sm:leading-[40px]">{{ $game->name }}</h1>
+                    <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-white/70 sm:text-[14px]">
                         <span class="flex items-center gap-1"><x-icon name="gamepad" class="h-4 w-4" /> Windows, Mac</span>
                         <span>{{ $game->genre }}</span>
                         <span>{{ $game->created_at?->format('M j, Y') }}</span>
@@ -48,8 +54,8 @@
                 </div>
             </section>
 
-            <div class="flex items-start gap-8 p-8">
-                <div class="min-w-0 flex-1 space-y-8">
+            <div class="flex flex-col gap-6 p-4 sm:p-6 lg:flex-row lg:items-start lg:gap-8 lg:p-8">
+                <div class="min-w-0 flex-1 space-y-6 lg:space-y-8">
                     <section>
                         <h2 class="text-[18px] font-semibold leading-[28px] text-white">Description</h2>
                         <p class="mt-3 text-[14px] leading-[22px] text-white/70">{{ $game->description }}</p>
@@ -58,9 +64,9 @@
                     @if ($game->screenshots->isNotEmpty())
                         <section>
                             <h2 class="text-[18px] font-semibold leading-[28px] text-white">Media Carousel</h2>
-                            <div class="mt-3 flex gap-4">
+                            <div class="mt-3 flex gap-4 overflow-x-auto pb-2">
                                 @foreach ($game->screenshots as $screenshot)
-                                    <div class="h-[112px] w-[200px] overflow-hidden rounded-xl border border-[#222224] bg-[#161618]">
+                                    <div class="h-[112px] w-[200px] shrink-0 overflow-hidden rounded-xl border border-[#222224] bg-[#161618]">
                                         <img src="{{ asset('storage/'.$screenshot->path) }}" alt="{{ $game->name }} screenshot" class="h-full w-full object-cover opacity-70">
                                     </div>
                                 @endforeach
@@ -100,7 +106,7 @@
                     @endif
                 </div>
 
-                <aside class="w-[288px] shrink-0 rounded-2xl border border-[#222224] bg-[#161618] p-6">
+                <aside class="w-full shrink-0 rounded-2xl border border-[#222224] bg-[#161618] p-5 sm:p-6 lg:w-[288px]">
                     <div class="text-[30px] font-bold leading-[36px] text-white"><x-price :game="$game" /></div>
 
                     <div class="mt-6 space-y-3">

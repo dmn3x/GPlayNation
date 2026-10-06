@@ -9,7 +9,7 @@
         </button>
     </div>
 
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex items-center gap-4 rounded-2xl border border-[#222224] bg-[#161618] p-5">
             <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#1D4ED8]/10 text-[#1D4ED8]"><x-icon name="users" class="h-5 w-5" /></span>
             <span>
@@ -52,7 +52,8 @@
         @if ($games->isEmpty())
             <p class="py-10 text-center text-sm text-white/50">Tidak ada pengajuan pada tab ini.</p>
         @else
-            <table class="mt-2 w-full text-left">
+            <div class="overflow-x-auto">
+            <table class="mt-2 w-full min-w-[640px] text-left">
                 <thead>
                     <tr class="h-[33px] text-[10px] font-medium uppercase tracking-wide text-white/50">
                         <th class="font-medium">Game</th>
@@ -96,6 +97,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
         @endif
 
         <div class="flex flex-wrap items-center justify-between gap-3 border-t border-[#222224] pt-4 text-xs text-white/50">

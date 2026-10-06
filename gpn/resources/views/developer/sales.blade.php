@@ -19,7 +19,7 @@
     @error('month')<p class="mt-2 text-sm text-danger">{{ $message }}</p>@enderror
     @error('game_id')<p class="mt-2 text-sm text-danger">{{ $message }}</p>@enderror
 
-    <div class="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-5">
+    <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <div class="card p-5">
             <p class="text-sm text-faint">Gross</p>
             <p class="mt-1 text-2xl font-semibold">{{ \App\Support\Money::format($kpis['gross']) }}</p>
@@ -46,11 +46,11 @@
     <x-area-chart :points="$series" class="mt-3" />
 
     <h2 class="section-heading mt-6">Transactions</h2>
-    <div class="card mt-3 overflow-hidden">
+    <div class="card mt-3 overflow-x-auto">
         @if ($rows->isEmpty())
             <p class="p-5 text-subtle">No sales in this period.</p>
         @else
-            <table class="w-full text-left text-[15px]">
+            <table class="w-full min-w-[720px] text-left text-[15px]">
                 <thead>
                     <tr class="border-b border-[#222224] text-[11px] font-medium uppercase text-white/50">
                         <th class="px-4 py-3 font-medium">Date</th>

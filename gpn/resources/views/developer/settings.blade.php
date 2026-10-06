@@ -16,7 +16,7 @@
             @error('portfolio')<p class="field-error">{{ $message }}</p>@enderror
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <label for="payout_bank" class="mb-1 block text-sm font-medium">Payout bank</label>
                 <input type="text" id="payout_bank" name="payout_bank" value="{{ old('payout_bank', $developer->payout_bank) }}" maxlength="100" class="input">

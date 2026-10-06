@@ -9,7 +9,7 @@
         </a>
     </div>
 
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex items-center gap-4 rounded-2xl border border-[#222224] bg-[#161618] p-5">
             <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#1D4ED8]/10 text-[#1D4ED8]"><x-icon name="users" class="h-5 w-5" /></span>
             <span>
@@ -42,7 +42,7 @@
         <h2 class="text-sm font-semibold text-white">My Published Games</h2>
         <div class="mt-3 space-y-3">
             @forelse ($publishedGames as $game)
-                <div class="flex items-center gap-4 rounded-2xl border border-[#222224] bg-[#161618] p-4">
+                <div class="flex flex-col gap-4 rounded-2xl border border-[#222224] bg-[#161618] p-4 sm:flex-row sm:items-center">
                     @if ($game->cover_path)
                         <img src="{{ Storage::url($game->cover_path) }}" alt="" aria-hidden="true" class="h-12 w-16 shrink-0 rounded-xl object-cover">
                     @endif
@@ -50,7 +50,7 @@
                         <p class="truncate text-sm font-semibold text-white">{{ $game->name }}</p>
                         <p class="text-xs text-[#30D158]">Live</p>
                     </div>
-                    <div class="flex shrink-0 items-center gap-2">
+                    <div class="flex flex-wrap shrink-0 items-center gap-2">
                         <a href="{{ route('dev.games.edit', $game) }}" class="flex h-[30px] items-center rounded-xl border border-[#222224] px-3 text-xs font-medium text-white transition hover:bg-white/5">Edit Details</a>
                         <a href="{{ route('dev.games.edit', $game) }}" class="flex h-[30px] items-center rounded-xl border border-[#222224] px-3 text-xs font-medium text-white transition hover:bg-white/5">Update Build</a>
                         <form method="POST" action="{{ route('dev.games.archive', $game) }}">

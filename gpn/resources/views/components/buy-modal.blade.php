@@ -5,7 +5,7 @@
     $total = \App\Support\Money::format($game->effectivePrice());
 @endphp
 <div id="buy-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Complete your purchase">
-    <div class="w-[640px] max-w-full rounded-2xl border border-[#222224] bg-[#161618] p-8 shadow-2xl">
+    <div class="w-[640px] max-w-full rounded-2xl border border-[#222224] bg-[#161618] p-5 shadow-2xl sm:p-8">
         <div class="flex items-start justify-between gap-6">
             <div>
                 <h2 class="text-[24px] font-bold leading-[32px] text-white">Complete your purchase</h2>

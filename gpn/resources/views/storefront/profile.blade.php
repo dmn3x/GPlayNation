@@ -9,7 +9,7 @@
 <body class="min-h-screen bg-bg text-fg font-sans antialiased">
     @include('partials.slim-header', ['active' => 'profile'])
 
-    <section class="relative overflow-hidden bg-gradient-to-b from-[#1D4ED8]/10 via-[#0F0F10] to-[#0F0F10] px-12 pb-8 pt-10">
+    <section class="relative overflow-hidden bg-gradient-to-b from-[#1D4ED8]/10 via-[#0F0F10] to-[#0F0F10] px-4 pb-8 pt-10 md:px-12">
         <div class="absolute left-1/2 top-0 h-[145px] w-[1200px] -translate-x-1/2 rounded-full bg-[#1D4ED8]/10 blur-[150px]"></div>
         <div class="relative mx-auto flex max-w-[1510px] flex-col items-center text-center">
             @if ($user->avatar_path)
@@ -36,19 +36,19 @@
         </div>
     </section>
 
-    <nav class="border-b border-[#222224]">
-        <div class="mx-auto flex max-w-[1510px] justify-center gap-6 px-12">
-            <a href="#library" class="border-b-2 border-white px-1 py-4 text-[14px] font-medium text-white">My Library</a>
-            <a href="#purchased" class="px-1 py-4 text-[14px] font-medium text-white/50 transition hover:text-white">Purchased</a>
-            <a href="#wishlist" class="px-1 py-4 text-[14px] font-medium text-white/50 transition hover:text-white">Wishlist</a>
+    <nav class="border-b border-[#222224] overflow-x-auto">
+        <div class="mx-auto flex max-w-[1510px] justify-start gap-2 px-4 md:justify-center md:gap-6 md:px-12">
+            <a href="#library" class="whitespace-nowrap border-b-2 border-white px-2 py-4 text-[14px] font-medium text-white md:px-1">My Library</a>
+            <a href="#purchased" class="whitespace-nowrap px-2 py-4 text-[14px] font-medium text-white/50 transition hover:text-white md:px-1">Purchased</a>
+            <a href="#wishlist" class="whitespace-nowrap px-2 py-4 text-[14px] font-medium text-white/50 transition hover:text-white md:px-1">Wishlist</a>
             @if (auth()->user()->isVerifiedDeveloper())
-                <a href="{{ route('dev.dashboard') }}" class="px-1 py-4 text-[14px] font-medium text-white/50 transition hover:text-white">Developer Dashboard</a>
+                <a href="{{ route('dev.dashboard') }}" class="whitespace-nowrap px-2 py-4 text-[14px] font-medium text-white/50 transition hover:text-white md:px-1">Developer Dashboard</a>
             @endif
-            <a href="#settings" class="px-1 py-4 text-[14px] font-medium text-white/50 transition hover:text-white">Settings</a>
+            <a href="#settings" class="whitespace-nowrap px-2 py-4 text-[14px] font-medium text-white/50 transition hover:text-white md:px-1">Settings</a>
         </div>
     </nav>
 
-    <main class="mx-auto max-w-[1510px] px-12 py-8">
+    <main class="mx-auto max-w-[1510px] px-4 py-6 md:px-12 md:py-8">
         <section id="library" class="scroll-mt-24">
             <h2 class="mb-5 text-[14px] font-medium text-white">My Library</h2>
             @if ($user->libraries->isEmpty())
@@ -58,9 +58,9 @@
                     <a href="{{ route('store.index') }}" class="rounded-xl bg-[#1D4ED8] px-5 py-2.5 text-[15px] font-medium">Browse the store</a>
                 </div>
             @else
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                     @foreach ($user->libraries as $library)
-                        <a href="{{ route('store.show', $library->game->slug) }}" class="group relative block h-[410px] overflow-hidden rounded-2xl border border-[#222224] bg-[#161618] transition hover:border-[#303034]">
+                        <a href="{{ route('store.show', $library->game->slug) }}" class="group relative block h-[280px] overflow-hidden rounded-2xl border border-[#222224] bg-[#161618] transition hover:border-[#303034] sm:h-[410px]">
                             <img src="{{ asset('storage/'.$library->game->cover_path) }}" alt="{{ $library->game->name }} cover" class="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-300 group-hover:scale-[1.02]">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#0F0F10] via-transparent to-transparent"></div>
                             <div class="absolute inset-x-4 bottom-4">
@@ -85,7 +85,7 @@
             @if ($user->wishlists->isEmpty())
                 <p class="text-[15px] text-white/60">No wishlisted games yet.</p>
             @else
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
                     @foreach ($user->wishlists as $wishlist)
                         <x-game-card :game="$wishlist->game" />
                     @endforeach

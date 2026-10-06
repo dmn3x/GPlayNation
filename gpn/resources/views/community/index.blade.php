@@ -16,8 +16,8 @@
         @include('partials.marketing-header', ['active' => 'community'])
     </div>
 
-    <main class="mx-auto flex max-w-[1446px] items-start gap-5 px-8 py-8">
-        <aside class="w-[260px] shrink-0 space-y-6">
+    <main class="mx-auto flex max-w-[1446px] flex-col items-stretch gap-5 px-4 py-6 lg:flex-row lg:items-start lg:px-8 lg:py-8">
+        <aside class="hidden w-[260px] shrink-0 space-y-6 lg:block">
             <nav class="rounded-2xl border border-[#222224] bg-[#161618] p-3">
                 @php
                     $items = [
@@ -91,12 +91,12 @@
                 </div>
             @endauth
 
-            <div class="flex items-center gap-5 rounded-2xl border border-[#222224] bg-[#161618] p-1.5">
-                <span class="flex h-[33px] items-center gap-2.5 rounded-[10px] bg-[#1D4ED8] px-9 text-[14px] font-medium">Hot</span>
-                <span class="text-[14px] font-medium text-white/60">New</span>
-                <span class="text-[14px] font-medium text-white/60">Top</span>
-                <span class="text-[14px] font-medium text-white/60">Rising</span>
-                <span class="ml-auto text-[13px] text-white/40">Showing posts from your communities</span>
+            <div class="flex items-center gap-3 overflow-x-auto rounded-2xl border border-[#222224] bg-[#161618] p-1.5 sm:gap-5">
+                <span class="flex h-[33px] shrink-0 items-center gap-2.5 rounded-[10px] bg-[#1D4ED8] px-6 text-[14px] font-medium sm:px-9">Hot</span>
+                <span class="shrink-0 text-[14px] font-medium text-white/60">New</span>
+                <span class="shrink-0 text-[14px] font-medium text-white/60">Top</span>
+                <span class="shrink-0 text-[14px] font-medium text-white/60">Rising</span>
+                <span class="ml-auto hidden shrink-0 text-[13px] text-white/40 md:inline">Showing posts from your communities</span>
             </div>
 
             @forelse ($posts as $post)
@@ -124,8 +124,8 @@
                         @endauth
                     </div>
 
-                    <div class="min-w-0 flex-1 p-5">
-                        <div class="flex items-center gap-2 text-[13px]">
+                    <div class="min-w-0 flex-1 p-4 sm:p-5">
+                        <div class="flex flex-wrap items-center gap-2 text-[13px]">
                             <span class="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-gradient-to-br from-[#1D4ED8] to-[#287BF7] text-[10px] font-semibold">{{ strtoupper(mb_substr($post->user->name, 0, 1)) }}</span>
                             <span class="text-white">{{ $post->user->name }}</span>
                             <span class="text-white/40">·</span>
@@ -140,7 +140,7 @@
                                 <img src="{{ asset('storage/'.$post->image_path) }}" alt="Post attachment" loading="lazy" class="max-h-96 w-full object-cover">
                             </div>
                         @endif
-                        <div class="mt-3.5 flex items-center gap-1">
+                        <div class="mt-3.5 flex flex-wrap items-center gap-1">
                             <span class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium text-white/60 transition hover:bg-[#222224]"><x-icon name="users" class="h-4 w-4" /> Comments</span>
                             <span class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium text-white/60 transition hover:bg-[#222224]"><x-icon name="upload" class="h-4 w-4" /> Share</span>
                             <span class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium text-white/60 transition hover:bg-[#222224]"><x-icon name="heart" class="h-4 w-4" /> Save</span>

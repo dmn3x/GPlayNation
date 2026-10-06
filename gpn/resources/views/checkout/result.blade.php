@@ -18,12 +18,12 @@
         $ink = $tone === 'ok' ? 'text-[#30D158]' : ($tone === 'warn' ? 'text-amber-400' : 'text-[#FF453A]');
         $chipBg = $tone === 'ok' ? 'bg-[#30D158]/10' : ($tone === 'warn' ? 'bg-amber-400/10' : 'bg-[#FF453A]/10');
     @endphp
-    <div class="mx-auto max-w-[1120px] p-[45px]">
+    <div class="mx-auto max-w-[1120px] p-4 sm:p-6 md:p-[45px]">
         <div class="flex justify-center">
             <x-checkout-steps :current="$final ? 3 : 2" :done-all="$status === \App\Enums\TransaksiStatus::Success" />
         </div>
 
-        <section class="relative mx-auto mt-8 w-[600px] max-w-full overflow-hidden rounded-[20px] border {{ $ring }} bg-[#161618] p-[42px] text-center">
+        <section class="relative mx-auto mt-8 w-[600px] max-w-full overflow-hidden rounded-[20px] border {{ $ring }} bg-[#161618] p-5 text-center sm:p-[42px]">
             <div class="pointer-events-none absolute -top-24 left-1/2 h-48 w-[420px] -translate-x-1/2 rounded-full {{ $glow }} blur-[80px]" aria-hidden="true"></div>
             <div class="relative">
                 <span class="mx-auto grid h-[58px] w-[58px] place-items-center rounded-full border {{ $ring }} {{ $chipBg }} {{ $ink }} text-[25px] font-bold">
@@ -46,7 +46,7 @@
                     <div class="flex h-[45px] items-center justify-between gap-4 border-t border-[#222224]"><dt class="text-[12px] text-white/60">Total</dt><dd class="text-[13px] font-semibold text-white">{{ \App\Support\Money::format($trx->total) }}</dd></div>
                 </dl>
 
-                <div class="mt-6 grid grid-cols-2 gap-3">
+                <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                     @if ($status === \App\Enums\TransaksiStatus::Success && $isGamePurchase && $game)
                         <a href="{{ route('games.download', $game->slug) }}" class="flex h-[42px] items-center justify-center rounded-[14px] bg-[#1D4ED8] px-5 text-[14px] font-medium text-white transition hover:brightness-110">Lihat Game</a>
                     @elseif ($status === \App\Enums\TransaksiStatus::Pending)

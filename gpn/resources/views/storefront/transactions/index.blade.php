@@ -1,6 +1,6 @@
 <x-txn-shell active="history" title="Riwayat Transaksi · GPlayNation" :pending="$pending ?? null" :latest="$latest ?? null">
-    <div class="mx-auto max-w-[1120px] p-[45px]">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="mx-auto max-w-[1120px] p-4 sm:p-6 md:p-[45px]">
+        <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-4">
             <div>
                 <p class="text-[11px] font-semibold uppercase tracking-[1.54px] text-[#60A5FA]">Akun saya</p>
                 <h1 class="mt-1 text-[28px] font-bold leading-[36px] text-white">Riwayat Transaksi</h1>
@@ -9,16 +9,16 @@
             <a href="{{ route('store.index') }}" class="flex h-[42px] items-center rounded-[14px] border border-[#28282C] px-5 text-[14px] font-medium text-white transition hover:bg-white/5">Beli Game Lain</a>
         </div>
 
-        <div class="mt-6 grid grid-cols-3 divide-x divide-[#222224] border-y border-[#222224]">
-            <div class="p-6">
+        <div class="mt-6 grid grid-cols-1 divide-y divide-[#222224] border-y border-[#222224] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            <div class="p-4 sm:p-6">
                 <p class="text-[12px] text-white/60">Total transaksi</p>
                 <p class="mt-1 text-[20px] font-bold text-white">{{ $stats['total'] }}</p>
             </div>
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <p class="text-[12px] text-white/60">Berhasil</p>
                 <p class="mt-1 text-[20px] font-bold text-white">{{ $stats['success'] }}</p>
             </div>
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <p class="text-[12px] text-white/60">Total belanja</p>
                 <p class="mt-1 text-[20px] font-bold text-white">{{ \App\Support\Money::format($stats['spent']) }}</p>
             </div>

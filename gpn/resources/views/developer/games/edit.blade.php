@@ -20,7 +20,7 @@
             <form method="POST" action="{{ route('dev.iaps.update', $iap) }}" class="card mt-4 space-y-4 p-6">
                 @csrf
                 @method('PUT')
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <label for="iap-name-{{ $iap->id }}" class="mb-1 block text-sm font-medium">Name</label>
                         <input type="text" id="iap-name-{{ $iap->id }}" name="name" value="{{ old('name', $iap->name) }}" required maxlength="150" class="input">

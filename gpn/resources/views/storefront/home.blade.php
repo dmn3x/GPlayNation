@@ -7,7 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-bg text-fg font-sans antialiased">
-    <section class="relative h-[932px] overflow-hidden">
+    <section class="relative flex min-h-[560px] flex-col justify-end overflow-hidden pb-20 pt-28 sm:min-h-[640px] md:h-[932px] md:justify-normal md:pb-0 md:pt-0">
         @if ($hero?->cover_path)
             <img src="{{ asset('storage/'.$hero->cover_path) }}" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover opacity-60">
         @else
@@ -22,21 +22,21 @@
             @include('partials.marketing-header', ['active' => 'store'])
         </div>
 
-        <div class="absolute bottom-[260px] left-[85px] max-w-[864px]">
-            <p class="text-[18px] font-bold uppercase leading-6 tracking-[0.9px] text-[#1D4ED8]">Game of the Week</p>
+        <div class="relative z-10 mx-auto w-full max-w-[864px] px-4 pb-16 sm:px-8 md:absolute md:bottom-[260px] md:left-[85px] md:mx-0 md:px-0 md:pb-0">
+            <p class="text-[14px] font-bold uppercase leading-6 tracking-[0.9px] text-[#1D4ED8] md:text-[18px]">Game of the Week</p>
 
             @if ($hero)
-                <h1 class="mt-[30px] max-w-[538px] text-[72px] font-bold leading-[72px] tracking-[-1.8px] text-white">'{{ $hero->name }}'</h1>
-                <p class="mt-3 text-[27px] font-medium leading-[42px] text-white/60">by {{ $hero->developer?->studio_name ?? 'Nusantara Studios' }}</p>
-                <p class="mt-[30px] max-w-[672px] text-[21px] leading-[34.125px] text-white/70">{{ $hero->description }}</p>
+                <h1 class="mt-4 max-w-[538px] text-4xl font-bold leading-[1.05] tracking-[-1.8px] text-white sm:text-6xl md:mt-[30px] md:text-[72px] md:leading-[72px]">'{{ $hero->name }}'</h1>
+                <p class="mt-3 text-[18px] font-medium leading-[28px] text-white/60 md:text-[27px] md:leading-[42px]">by {{ $hero->developer?->studio_name ?? 'Nusantara Studios' }}</p>
+                <p class="mt-4 max-w-[672px] text-[15px] leading-[24px] text-white/70 md:mt-[30px] md:text-[21px] md:leading-[34.125px]">{{ $hero->description }}</p>
                 <a href="{{ route('store.show', $hero->slug) }}"
-                   class="mt-[30px] inline-flex h-[72px] w-[240px] items-center justify-center rounded-3xl bg-[#1D4ED8] px-12 text-[24px] font-medium whitespace-nowrap text-white shadow-[0_0_30px_rgba(29,78,216,0.4)] transition hover:brightness-110 hover:shadow-[0_0_36px_rgba(29,78,216,0.55)]">
+                   class="mt-6 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-[#1D4ED8] px-8 text-[18px] font-medium whitespace-nowrap text-white shadow-[0_0_30px_rgba(29,78,216,0.4)] transition hover:brightness-110 hover:shadow-[0_0_36px_rgba(29,78,216,0.55)] sm:w-[240px] md:mt-[30px] md:h-[72px] md:rounded-3xl md:px-12 md:text-[24px]">
                     Explore Now
                 </a>
             @endif
         </div>
 
-        <div class="absolute bottom-[104px] left-1/2 flex w-20 -translate-x-1/2 items-center gap-2">
+        <div class="absolute bottom-[104px] left-1/2 hidden w-20 -translate-x-1/2 items-center gap-2 md:flex">
             <span class="h-1 w-8 rounded-full bg-[#1D4ED8]"></span>
             <span class="h-1 w-2 rounded-full bg-white/20"></span>
             <span class="h-1 w-2 rounded-full bg-white/20"></span>
@@ -45,9 +45,9 @@
     </section>
 
     @if ($popular->isNotEmpty())
-        <section class="mx-auto max-w-[1440px] px-12 py-14">
+        <section class="mx-auto max-w-[1440px] px-4 py-10 md:px-12 md:py-14">
             <h2 class="mb-6 text-[18.9px] font-semibold leading-[27px]">Popular</h2>
-            <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
                 @foreach ($popular as $game)
                     <x-game-card :game="$game" />
                 @endforeach
@@ -56,9 +56,9 @@
     @endif
 
     @if ($latest->isNotEmpty())
-        <section class="mx-auto max-w-[1440px] px-12 pb-16">
+        <section class="mx-auto max-w-[1440px] px-4 pb-12 md:px-12 md:pb-16">
             <h2 class="mb-6 text-[18.9px] font-semibold leading-[27px]">New Releases</h2>
-            <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
                 @foreach ($latest as $game)
                     <x-game-card :game="$game" />
                 @endforeach

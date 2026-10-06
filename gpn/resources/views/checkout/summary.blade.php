@@ -8,8 +8,8 @@
         ];
         $itemName = $trx->iap?->name ?? $trx->game?->name ?? 'Unknown item';
     @endphp
-    <div class="mx-auto max-w-[1120px] p-[45px]">
-        <div class="flex flex-wrap items-end justify-between gap-6">
+    <div class="mx-auto max-w-[1120px] p-4 sm:p-6 md:p-[45px]">
+        <div class="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between lg:gap-6">
             <div>
                 <p class="text-[11px] font-semibold uppercase tracking-[1.54px] text-[#60A5FA]">Checkout</p>
                 <h1 class="mt-1 text-[28px] font-bold leading-[36px] text-white">Proses Pembayaran</h1>
@@ -20,7 +20,7 @@
 
         <form method="POST" action="{{ route('checkout.pay', $trx->order_id) }}" class="mt-6 flex flex-col gap-6 lg:flex-row">
             @csrf
-            <section class="min-w-0 flex-1 rounded-2xl border border-[#222224] bg-[#161618] p-7">
+            <section class="min-w-0 flex-1 rounded-2xl border border-[#222224] bg-[#161618] p-4 sm:p-7">
                 <h2 class="text-[16px] font-semibold text-white">Pilih Metode Pembayaran</h2>
                 <p class="mt-1 text-[12px] text-white/60">Semua transaksi dilindungi dengan enkripsi berstandar industri.</p>
 

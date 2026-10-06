@@ -6,7 +6,7 @@
         $itemName = $transaksi->iap?->name ?? $transaksi->game?->name ?? 'Unknown item';
         $isSettledGame = $transaksi->status === \App\Enums\TransaksiStatus::Success && $transaksi->game !== null && $transaksi->iap_id === null;
     @endphp
-    <div class="mx-auto max-w-[1120px] p-[45px]">
+    <div class="mx-auto max-w-[1120px] p-4 sm:p-6 md:p-[45px]">
         <div>
             <p class="text-[11px] font-semibold uppercase tracking-[1.54px] text-[#60A5FA]">AKUN SAYA</p>
             <div class="mt-1 flex flex-wrap items-center justify-between gap-4">
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <section class="mx-auto mt-6 w-[600px] max-w-full rounded-[20px] border border-[#222224] bg-[#161618] p-[42px]">
+        <section class="mx-auto mt-6 w-[600px] max-w-full rounded-[20px] border border-[#222224] bg-[#161618] p-5 sm:p-[42px]">
             <div class="flex items-center gap-4">
                 @if ($transaksi->game?->cover_path)
                     <img src="{{ asset('storage/'.$transaksi->game->cover_path) }}" alt="" aria-hidden="true" class="h-[80px] w-[112px] shrink-0 rounded-xl object-cover">
@@ -39,7 +39,7 @@
                 <div class="flex h-[45px] items-center justify-between gap-4 border-t border-[#222224]"><dt class="text-[12px] text-white/60">Total</dt><dd class="text-[13px] font-semibold text-white">{{ \App\Support\Money::format($transaksi->total) }}</dd></div>
             </dl>
 
-            <div class="mt-6 grid grid-cols-2 gap-3">
+            <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 @if ($isSettledGame)
                     <a href="{{ route('games.download', $transaksi->game->slug) }}" class="flex h-[42px] items-center justify-center rounded-[14px] bg-[#1D4ED8] px-5 text-[14px] font-medium text-white transition hover:brightness-110">Lihat Game</a>
                 @elseif ($transaksi->status === \App\Enums\TransaksiStatus::Pending)

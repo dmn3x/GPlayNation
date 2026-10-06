@@ -8,6 +8,22 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#0F0F10] font-sans text-white antialiased">
+    <div class="border-b border-[#222224] bg-[#0F0F10] px-4 py-3 md:hidden">
+        <div class="mb-2 flex items-center justify-between gap-2">
+            <a href="{{ route('home') }}" class="flex items-center gap-2" aria-label="GPlayNation home">
+                <x-logo class="h-7 w-auto text-white" />
+            </a>
+            <a href="{{ route('home') }}" class="rounded-lg px-3 py-2 text-sm text-white/60 hover:bg-white/5 hover:text-white">Back</a>
+        </div>
+        <nav class="flex gap-1 overflow-x-auto">
+            <button type="button" data-cart-soon class="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-white/60 hover:bg-white/5 hover:text-white">Keranjang</button>
+            @if ($trx)
+                <a href="{{ route('checkout.summary', $trx->order_id) }}" class="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium {{ $active === 'pay' ? 'bg-[#1D4ED8]/20 text-white' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">Proses Pembayaran</a>
+                <a href="{{ route('transactions.show', $trx->order_id) }}" class="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium {{ $active === 'status' ? 'bg-[#1D4ED8]/20 text-white' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">Status Pembayaran</a>
+            @endif
+            <a href="{{ route('transactions.index') }}" class="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium {{ $active === 'history' ? 'bg-[#1D4ED8]/20 text-white' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">Riwayat Transaksi</a>
+        </nav>
+    </div>
     <div class="flex min-h-screen">
         <aside class="sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col border-r border-[#222224] bg-[#0F0F10] p-4 md:flex">
             <a href="{{ route('home') }}" class="mb-6 flex items-center p-2" aria-label="GPlayNation home">

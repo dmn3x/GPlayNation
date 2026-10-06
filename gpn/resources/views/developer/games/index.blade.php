@@ -11,7 +11,7 @@
         </a>
     </div>
 
-    <div class="mt-6 grid grid-cols-3 gap-6">
+    <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
         <div class="rounded-2xl border border-[#222224] bg-[#161618] p-5">
             <p class="text-[14px] text-white/60">Total Games</p>
             <p class="mt-1 text-[28px] font-bold text-white">{{ number_format($stats['total']) }}</p>
@@ -45,7 +45,8 @@
                 <a href="{{ route('dev.games.create') }}" class="mt-4 inline-flex h-10 items-center rounded-2xl bg-[#1D4ED8] px-4 text-sm font-medium text-white transition hover:brightness-110">Add New Game</a>
             </div>
         @else
-            <table class="w-full text-left">
+            <div class="overflow-x-auto">
+            <table class="w-full min-w-[720px] text-left">
                 <thead>
                     <tr class="h-11 border-y border-[#222224] bg-white/[0.03] text-xs font-medium uppercase tracking-wide text-white/60">
                         <th class="px-4 font-medium">Title</th>
@@ -97,6 +98,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
             <div class="flex items-center justify-between border-t border-[#222224] px-4 py-3 text-[12px] text-white/60">
                 <span>Showing {{ $games->count() }} of {{ $stats['total'] }}</span>
                 <span>Page 1 of 1</span>

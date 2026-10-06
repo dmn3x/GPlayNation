@@ -1,0 +1,21 @@
+# Dependencies are reinstalled on Vercel (composer install is
+# handled by the vercel-php runtime, npm install by the platform).
+/vendor
+/node_modules
+
+# Never upload local env files.
+.env
+.env.backup
+.env.production
+
+# Slim the upload; these are regenerated at runtime in /tmp.
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# Tests and dev-only files are not needed at runtime.
+/tests
+phpunit.xml
+Homestead.json
+Homestead.yaml

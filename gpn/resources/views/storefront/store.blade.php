@@ -7,8 +7,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-bg text-fg font-sans antialiased">
-    <div class="flex">
-        <aside class="sticky top-0 h-screen w-[224px] shrink-0 border-r border-[#222224] bg-bg p-4">
+    <div class="flex flex-col lg:flex-row">
+        <aside class="hidden w-[224px] shrink-0 border-r border-[#222224] bg-bg p-4 lg:sticky lg:top-0 lg:block lg:h-screen">
             <div class="mb-6 flex items-center gap-2 p-1">
                 <x-icon name="tags" class="h-4 w-4 text-white/90" />
                 <span class="text-[14px] font-semibold text-white/90">Filters</span>
@@ -73,7 +73,48 @@
             </a>
         </aside>
 
-        <main class="min-w-0 flex-1 p-6">
+        <main class="min-w-0 flex-1 p-4 md:p-6">
+            <details class="mb-4 overflow-hidden rounded-xl border border-[#222224] bg-[#161618] lg:hidden">
+                <summary class="flex cursor-pointer list-none items-center justify-between p-4 text-[14px] font-semibold text-white/90 [&::-webkit-details-marker]:hidden">
+                    <span class="flex items-center gap-2"><x-icon name="tags" class="h-4 w-4 text-white/90" /> Filters</span>
+                    <x-icon name="chevron-down" class="h-4 w-4 text-white/50" />
+                </summary>
+                <form method="GET" action="{{ route('store.index') }}" class="space-y-3 border-t border-[#222224] p-4">
+                    @if (request('sort'))
+                        <input type="hidden" name="sort" value="{{ request('sort') }}">
+                    @endif
+                    <div>
+                        <p class="mb-2 text-[14px] font-medium text-white/80">Categories</p>
+                        <div class="flex flex-wrap gap-2">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="genre" value="" class="peer sr-only" @checked(! request('genre')) onchange="this.form.submit()">
+                                <span class="block rounded-full border border-[#27282A] px-3 py-1.5 text-[12px] font-medium text-white/60 peer-checked:border-[#1D4ED8] peer-checked:bg-[#1D4ED8] peer-checked:text-white">All</span>
+                            </label>
+                            @foreach ($genres as $genre)
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="genre" value="{{ $genre }}" class="peer sr-only" @checked(request('genre') === $genre) onchange="this.form.submit()">
+                                    <span class="block rounded-full border border-[#27282A] px-3 py-1.5 text-[12px] font-medium text-white/60 peer-checked:border-[#1D4ED8] peer-checked:bg-[#1D4ED8] peer-checked:text-white">{{ $genre }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2 text-[14px] font-medium text-white/80">Price</p>
+                        <div class="flex flex-wrap gap-2">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="price" value="" class="peer sr-only" @checked(! request('price')) onchange="this.form.submit()">
+                                <span class="block rounded-full border border-[#27282A] px-3 py-1.5 text-[12px] font-medium text-white/60 peer-checked:border-[#1D4ED8] peer-checked:bg-[#1D4ED8] peer-checked:text-white">Any</span>
+                            </label>
+                            @foreach (['free' => 'Free', 'under50' => 'Under Rp 50rb', '50to150' => 'Rp 50–150rb', 'above150' => 'Above Rp 150rb'] as $value => $label)
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="price" value="{{ $value }}" class="peer sr-only" @checked(request('price') === $value) onchange="this.form.submit()">
+                                    <span class="block rounded-full border border-[#27282A] px-3 py-1.5 text-[12px] font-medium text-white/60 peer-checked:border-[#1D4ED8] peer-checked:bg-[#1D4ED8] peer-checked:text-white">{{ $label }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </form>
+            </details>
             @if (request('q'))
                 <div class="mb-6 rounded-2xl border border-[#222224] bg-[#161618] p-4">
                     <form action="{{ route('store.index') }}" method="GET" class="flex h-12 items-center gap-3 rounded-2xl border border-[#222224] bg-[#0F0F10] px-4">
@@ -89,8 +130,8 @@
                     <p class="mt-3 text-[14px] text-white/60">{{ $games->total() }} game{{ $games->total() === 1 ? '' : 's' }} to explore for &ldquo;{{ request('q') }}&rdquo;</p>
                 </div>
             @endif
-            <div class="mb-6 flex items-center justify-between">
-                <h1 class="text-[24px] font-bold leading-[32px] text-white">Marketplace Home</h1>
+            <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h1 class="text-[20px] font-bold leading-[28px] text-white md:text-[24px] md:leading-[32px]">Marketplace Home</h1>
                 <form method="GET" action="{{ route('store.index') }}">
                     @foreach (request()->except('sort', 'page') as $key => $value)
                         @if (is_string($value) && $value !== '')
@@ -116,7 +157,7 @@
                     <p class="text-sm text-white/60">Try a different search or clear your filters.</p>
                 </div>
             @else
-                <div class="grid grid-cols-2 gap-4 xl:grid-cols-3">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     @foreach ($games as $game)
                         <a href="{{ route('store.show', $game->slug) }}" class="group block overflow-hidden rounded-2xl border border-[#222224] bg-[#161618] transition hover:border-[#303034]">
                             <div class="relative h-[128px] bg-black">

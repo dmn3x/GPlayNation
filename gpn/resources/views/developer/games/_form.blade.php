@@ -11,7 +11,7 @@
         @error('description')<p class="field-error">{{ $message }}</p>@enderror
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
             <label for="genre" class="mb-1 block text-sm font-medium">Genre</label>
             <select id="genre" name="genre" required class="input">
