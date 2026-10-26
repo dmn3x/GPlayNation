@@ -1,0 +1,28 @@
+name: gplaynation
+
+services:
+  gpn-serve:
+    container_name: gpn-serve
+    image: gplaynation:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    stop_grace_period: 30s
+    env_file:
+      - .env.docker
+    environment:
+      RUN_BOOTSTRAP: "true"
+    ports:
+      - "${APP_PORT:-8001}:80"
+    volumes:
+      - storage:/var/www/html/storage
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  storage:
